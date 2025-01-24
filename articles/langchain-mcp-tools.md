@@ -6,31 +6,148 @@ topics: ["LangChain", "MCP", "AIエージェント", "ReAct", "LLM" ]
 published: true
 ---
 
-<!-- "LangChain の可能性が450+倍に！MCPサーバーツール完全活用法！" -->
-<!-- "LangChainで 450+の MCP ツール群を楽チン利用できるライブラリ！" -->
+## Quick Start!
 
-## 今 MCP がアツイ！
+これから **「MCPサーバの機能を LangChain から簡単利用するためのユーティリティ」** と、それを使った LLM からの外部リソースの呼び出しをご紹介していくのですが…
+
+関連技術を既にご存知で **「手早く実際のコードの雰囲気を見てみたい！」** という方に向けて…
+まず最初に、そのユーティリティを使って、LangChain の ReAct Agent を介して MCP の機能呼び出しを実現する方法の概略を、コードの実例と共に駆け足でご紹介します。
+
+**「最初は内容からじっくり理解したい」** という方は、[次の節まで読み飛ばしてください](#%E2%80%8B)。
+
+
+#### シムテム要件：
+
+- Python 3.11+ もしくは Node.js 16+
+- [uv のインストール](https://docs.astral.sh/uv/getting-started/installation/)（Pythonベースの MCPサーバの実行に使用）
+- npm 7+（Node.js ベースの MCPサーバの実行に使用）
+
+#### インストレーション：
+
+- **"MCP To LangChain Tools Conversion Utility"** :
+  - **[Python (PyPI)](https://pypi.org/project/langchain-mcp-tools/)**
+  - **[TypeScript (npmjs)](https://www.npmjs.com/package/@h1deya/langchain-mcp-tools)**
+
+```bash:Python
+pip install langchain-mcp-tools
+# uvユーザは：uv add langchain-mcp-tools
+```
+```bash:TypeScript
+npm i @h1deya/langchain-mcp-tools
+```
+
+#### MCPサーバの設定：
+
+```python:Python
+mcp_configs = {
+    'fetch': {
+        'command': 'uvx',
+        'args': ['mcp-server-fetch']
+    },
+    'filesystem': {
+        'command': 'npx',
+        'args': ['-y', '@modelcontextprotocol/server-filesystem', '.']
+    }
+}
+```
+```ts:TypeScript
+const mcpServers: McpServersConfig = {
+  fetch: {
+    command: 'uvx',
+    args: ['mcp-server-fetch']
+  },
+  filesystem: {
+    command: 'npx',
+    args: ['-y', '@modelcontextprotocol/server-filesystem', '.']
+  }
+};
+```
+
+#### ユーティリティを用いた LangChain から MCP の呼び出し
+
+```python:Python
+from langchain_mcp_tools import convert_mcp_to_langchain_tools
+    ︙
+try:
+    tools, cleanup = await convert_mcp_to_langchain_tools(mcp_configs)
+        ︙<tools use>
+
+finally:
+    if cleanup:
+        await cleanup()
+```
+```ts:TypeScript
+import {
+  convertMcpToLangchainTools,
+  McpServersConfig,
+  McpServerCleanupFn
+} from '@h1deya/langchain-mcp-tools';
+    ︙
+
+let mcpCleanup: McpServerCleanupFn | undefined;
+try {
+  const { tools, cleanup } = await convertMcpToLangchainTools(mcpServers);
+  mcpCleanup = cleanup
+    ︙<tools use>
+
+} finally {
+  await mcpCleanup?.();
+}
+```
+
+#### LangChain / ReAct Agent のセットアップ
+
+```python:Python
+from langchain.chat_models import init_chat_model
+from langgraph.prebuilt import create_react_agent
+    ︙
+llm = init_chat_model(
+    model='claude-3-5-haiku-latest',
+    model_provider='anthropic'
+)
+
+agent = create_react_agent(
+    llm,
+    tools
+)
+```
+```ts:TypeScript
+import { ChatAnthropic } from '@langchain/anthropic';
+import { createReactAgent } from '@langchain/langgraph/prebuilt';
+    ︙
+const llm = new ChatAnthropic({ model: 'claude-3-5-haiku-latest' });
+
+const agent = createReactAgent({
+  llm,
+  tools
+});
+```
+
+以上で、たとえば **「bbc.com のニュースヘッドラインを読んで、日本語で要約して」** といったクエリを実行できるようになりました。
+
+#### <!-- &ZeroWidthSpace; >>> -->​<!-- <-- <<< &ZeroWidthSpace; -->
+![mcp-server-listing-sites](/images/langchain-mcp-tools/robot-langchain-tools.png)
+
+
+## MCP のインパクト
 
 Anthropic が [2024年11月に発表](https://www.anthropic.com/news/model-context-protocol)した「[Model Context Protocol（MCP）](https://modelcontextprotocol.io/introduction)」ですが、AI エージェント界隈でかなり盛り上ってます。MCP は何かというと、雑に言うと **LLM が外部ツールやリソースを扱えるようにして、生成 AI の適用範囲を劇的に拡大する オープンソース技術**。すでにこれを使って、Google Drive、Slack、Notion、Spotify、Docker、PostgreSQL なんかが LLM からアクセスできるようなってます。
 
 ただ残念なのは、**MCPの作法に沿って使わないといけない**こと…
-う〜ん、**LangChain から楽チンに使いたい！** そう思い立って！ そこそこ時間を燃やして！ …ついにできました！😭
+う〜ん、**LangChain から楽に使いたい！** そう思い立って！ 作りました！
 
-**「MCPサーバの機能を LangChain から簡単利用するためのユーティリティ」** をご紹介します！
+**「MCPサーバの機能を LangChain から簡単利用するためのユーティリティ」** をご紹介します。
 
-LangGraph で提供されている **話題の [ReAct Agent](https://sun-asterisk.com/service/development/viblo/reactagent/) で実際に利用** してみたので、そのサンプルコードもご紹介いたします。
+LangGraph で提供されている **話題の [ReAct Agent](https://sun-asterisk.com/service/development/viblo/reactagent/) で実際に利用** してみたので、そのサンプルコードも記載します。
 
-
-## え？ MCP って聞かないけど、本当に流行ってるの…？
-
-結構イケてます！ **現時点で利用可能な機能群（MCPサーバ）の数 450以上**。 ウェブ検索やブラウザ・オートメーション、DB アクセス、クラウド・サービス利用、SNS 連携 を含め、驚くほど多くの種類の外部機能が、誰でも LLM 連携できるように用意されています。ご参考までに以下に MCPサーバのまとめサイトをご紹介します：
+**現時点で利用可能な機能群（MCPサーバ）の数は 450以上**。 ウェブ検索やブラウザ・オートメーション、DB アクセス、クラウド・サービス利用、SNS 連携 を含め、驚くほど多くの種類の外部機能が、誰でも LLM 連携できるように用意されています。ご参考までに以下に MCPサーバのまとめサイトをご紹介します：
 
 - [Glama’s list of Open-Source MCP servers](https://glama.ai/mcp/servers)
 - [awesome-mcp-servers](https://github.com/hideya/awesome-mcp-servers#Server-Implementations)
 - [Smithery: MCP Server Registry](https://smithery.ai/)
 - [MCP公式サイトの MCPサーバの例](https://modelcontextprotocol.io/examples)
 
-これら **450+の機能群（MCP サーバ）を LangChain からガッツリ使えるようにしちゃおう！** っていうのが、本ユーティリティの目論見です。
+これら **450+の機能群（MCP サーバ）を LangChain からガッツリ使えるようにしちゃおう！** というのが、本ユーティリティの目論見です。
 
 ![mcp-server-listing-sites](/images/mcp-introduction/mcp-server-listing-sites.png =650x)
 
@@ -38,9 +155,9 @@ LangGraph で提供されている **話題の [ReAct Agent](https://sun-asteris
 ## LangChain ✕ MCP どうやって？
 
 では、実際どうやるのでしょうか？
-それがとっても楽ちんなんです！ **このユーティリティで、MCPサーバの機能群（ツール）を LangChain が直接扱える Tool に変換** して、単にそれを使えば OK！🙆‍♂️
+とっても簡単です！ **このユーティリティで、MCPサーバの機能群（ツール）を LangChain が直接扱える Tool に変換** して、単にそれを使えば OK！
 
-ユーティリティは Python用 と TypeScript用、両方用意してあります：
+ユーティリティは Python 用 と TypeScript 用、両方用意してあります：
 
 - **"MCP To LangChain Tools Conversion Utility"** :
   - **[Python (PyPI)](https://pypi.org/project/langchain-mcp-tools/)**
@@ -52,7 +169,7 @@ LangGraph で提供されている **話題の [ReAct Agent](https://sun-asteris
 
 もし「MCPって初めて聞いた」という方は、ユーティリティの使い方を具体的にご説明する前に、最低限必要な MCP の知識を少々お伝えさせてください。
 
-> MCP の詳細については、もしよろしければ、こちらのドキュメントもご覧ください 👇
+> MCP の詳細については、もしよろしければ、こちらのドキュメントもご覧ください：
 >『[AI エージェント界隈で話題の MCP の凄さ実感！ー その特徴・技術概要・今後の展開 ー「メタ AI エージェント」実現なるか？](https://zenn.dev/h1deya/articles/mcp-introduction)』
 
 
@@ -103,12 +220,10 @@ MCPクライアントは、MCPサーバとの仲介に加え、MCPサーバ利�
 
 シムテム要件は以下のとおりです：
 
-- Python版: 
-  - Python 3.11+
-  - [uv のインストール](https://docs.astral.sh/uv/getting-started/installation/)
-- TypeScript版: 
-  - Node.js 16+
-  - npm 7+
+- Python 3.11+ もしくは Node.js 16+
+- [uv のインストール](https://docs.astral.sh/uv/getting-started/installation/)（Pythonベースの MCPサーバの実行に使用）
+- npm 7+（Node.js ベースの MCPサーバの実行に使用）
+
 
 利用に先立って、まずユーティリティをインストールします：
 
@@ -121,7 +236,7 @@ pip install langchain-mcp-tools
 npm i @h1deya/langchain-mcp-tools
 ```
 
-まず全体感を掴んでいただくために、ユーティリティの呼び出しの手順をすべてまとめて書くと、Python版、TypeScirpt版それぞれで以下のようになります。コードの内容の詳細は順次追ってご説明いたします。
+全体感を掴んでいただくために、ユーティリティの呼び出しの手順をすべてまとめて書くと、Python版、TypeScirpt版それぞれで以下のようになります。コードの内容の詳細は順次追ってご説明します。
 
 
 ```python:Python
@@ -219,7 +334,7 @@ try {
 
 ### MCP To LangChain Tools Conversion Utility の呼び出し
 
-MCPサーバの設定の説明が思いの外長くなってしまいましたが（汗）、ユーティリティ関数の利用自体は簡単です！
+MCPサーバの設定が済んでしまえば、ユーティリティ関数の利用自体は簡単です！
 
 ```python:Python
 try:
@@ -251,13 +366,13 @@ try {
 
 ### LangChian / ReAct Agent での利用
 
-それでは（ようやく！）LangChain での利用の実際を見ていきましょう。
+それでは実際のコードで、この **`tool`** の LangChain での利用手順を見ていきましょう。
 
 以下の例では、使用する LLM として、Anthropic の `claude-3-5-haiku-latest` を、LangChain のユーティリティ関数を用いて初期化しています。
 
-実行にはせっかくですので、一時期話題をさらった[「ReAct エージェント」](https://sun-asterisk.com/service/development/viblo/reactagent/) を使ってみましょう。
+実行は一時期特に話題だった[「ReAct エージェント」](https://sun-asterisk.com/service/development/viblo/reactagent/) を使っています。
 
-ありがたいことに、LangGraph（`langgraph.prebuilt`）で、ReAct エージェント の初期化用関数が用意されています（Python：[`create_react_agent()`](https://api.python.langchain.com/en/latest/langchain/agents/langchain.agents.react.agent.create_react_agent.html)、TypeScript：[`createReactAgent()`](https://v03.api.js.langchain.com/functions/langchain.agents.createReactAgent.html)）。
+ありがたいことに LangGraph（`langgraph.prebuilt`）で ReAct エージェント の初期化用関数が用意されています（Python：[`create_react_agent()`](https://api.python.langchain.com/en/latest/langchain/agents/langchain.agents.react.agent.create_react_agent.html)、TypeScript：[`createReactAgent()`](https://v03.api.js.langchain.com/functions/langchain.agents.createReactAgent.html)）。
 
 これに、`llm` と共に、生成した `tools` を与えます：
 
@@ -292,7 +407,7 @@ const agent = createReactAgent({
 - ツール実行のための推論のチェーン（連鎖）の実行
 - ツール応答の処理
 
-以上で MCP を LangChain から呼び出す準備ができました！
+以上で MCP を LangChain から呼び出す準備ができました。
 
 
 ### クエリーの実行
@@ -319,11 +434,9 @@ const response = result.messages[result.messages.length - 1].content;
 
 つまり、**上の２つの MCPサーバを組み込むだけで、LLM アプリ外からの（ネットからの）情報の取得と、LLM アプリ外への情報の出力（ファイルの書き込み）ができるようになっちゃう** わけです！
 
-**Google Drive、Slack、Notion、Spotify、Docker、PostgreSQL… などにアクセスするための MCPサーバが、450+以上利用できるとなると…
-組み合わせると何が実現できるのか…**
-妄想が膨らみます！
-
-この記事のタイトルがあながち誇大広告でなかったと思っていただければ幸いです…！😅
+Google Drive、Slack、Notion、Spotify、Docker、PostgreSQL… などにアクセスするための MCPサーバが、450+以上利用できるとなると…
+組み合わせると何が実現できるのか…
+妄想が膨らみます…！
 
 
 ### 実際の使用例
@@ -332,7 +445,7 @@ const response = result.messages[result.messages.length - 1].content;
 - [Python](https://github.com/hideya/langchain-mcp-tools-py-usage/blob/main/src/example.py)（"Simple MCP Client Using LangChain / Python"）
 - [TypeScript](https://github.com/hideya/langchain-mcp-tools-ts-usage/blob/main/src/index.ts)（"Simple MCP Client Using LangChain / TypeScript"）
 
-MCPサーバ連携を色々簡単に試してみたいという方は、このユーティリティを使って作成した、以下の LangChain アプリを試してみてください：
+MCPサーバ連携を色々簡単に試してみたいという方は、このユーティリティを使って作成した、以下の簡単な LangChain アプリを試してみてください：
 - ["MCP Client Using LangChain / Python"](https://github.com/hideya/mcp-client-langchain-py)
 - ["MCP Client Using LangChain / TypeScript"](https://github.com/hideya/mcp-client-langchain-ts)
 
@@ -344,8 +457,6 @@ MCPサーバ連携を色々簡単に試してみたいという方は、この�
 長いので、ご興味のない方はスキップしてください！（というか、これが最後の節です！）
 
 変換ユーティリティはデフォルトで、以下のようなログメッセージを出しながら処理を進めます（オプションでログレベルは変更できます）。挙動がわかりやすいように、１回のクエリーを処理するサンプルコード（上述のコード例）の起動から終了までのログを添付します。ちょっと長いですがご容赦ください… （以下の出力は TypeScript 版のものですが、Python 版でもほぼ同様です）
-
-> というかですね、この原稿を書いてる最中に Python版のログに少々バグを発見してしまいまして… 😅 この原稿を世に出す前に修正入れます！
 
 ```
 % npm start
@@ -447,7 +558,7 @@ Filesystem MCPサーバの場合は `read_file`、`write_file`などなど、計
 
 長かったですが😅、みんさんの 想像力 + 創造力 を少しでも掻き立てられたなら、とってもうれしいです！
 
-今回も、アップアップで書きました…💦 もし何か書き違えを見つけたり、ご要望などございましたら、お気軽にコメントください 🙇‍♂️
+今回も、アップアップで書きました… もし何か書き違えを見つけたり、ご要望などございましたら、お気軽にコメントください 🙇‍♂️
 
 このユーティリティを活用して、数々のツールを想定外な方法で組み合わせて、あっ！と驚くようなことを実現するアプリができたりしないかな… そんな利用例が出てくることを心待ちにしてます！🚀
 
@@ -455,6 +566,3 @@ Filesystem MCPサーバの場合は `read_file`、`write_file`などなど、計
 
 > 今回こそは、サクッと簡潔に書き上げるつもりだったんだけどな…
 > 書きはじめるといつも想定の３倍くらいの長さになっちゃう… 😓
-
-
-![mcp-server-listing-sites](/images/langchain-mcp-tools/robot-langchain-tools.png)
