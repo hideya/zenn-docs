@@ -58,7 +58,7 @@ GitHub だけじゃないんです！
 - [Smithery: MCP Server Registry](https://smithery.ai/)
 - [MCP公式サイトの MCPサーバの例](https://modelcontextprotocol.io/examples)
 
-![mcp-server-listing-sites](/images/mcp-introduction/mcp-server-listing-sites.png =650x)
+![mcp-diagram-plain](/images/mcp-introduction/mcp-server-listing-sites.png =650x)
 
 ご覧のように、すでに 450 以上もの MCPサーバが利用できるんです！
 これらを組み合わせるとどんなことが実現できるか… 想像するだけでもワクワクしてきませんか…？
@@ -74,13 +74,13 @@ MCP のアーキテクチャ的な特徴は何でしょうか？
 
 以下は、2025年 1月時点での公式サイトの説明に沿った MCP 利用システムの構成例です：
 
-![mcp-diagram-stdio](/images/mcp-introduction/mcp-diagram-stdio.png =550x)
+![mcp-diagram-plain](/images/mcp-introduction/mcp-diagram-stdio.png =550x)
 
 MCPフレームワークでは、外部機能は（2025年 1月時点での参考例では）別プロセスで実行される「MCPサーバー」としてカプセル化されます。そしてその利用側とは、オープンな標準プロトコル「[MCP Protocol](https://spec.modelcontextprotocol.io/)」に沿って、標準入出力（`stdio`）を介してやり取りします。
 
-「MCPサーバー」は、典型的には Python や node.js で記述された小規模なソフトウェアです。例えば上の図において、ウェブ検索 MCPサーバは、`stdio`を介して受け取ったリクエストを、ウェブ検索サービスの API 呼び出しに変換して、結果を得ます（一種のラッパーですね）。SQLite MCPサーバも同様で、リクエストを SQLite ライブラリが提供する API を使って実行します。
+「MCPサーバー」は、典型的には Python や Node.js で記述された小規模なソフトウェアです。例えば上の図において、ウェブ検索 MCPサーバは、`stdio`を介して受け取ったリクエストを、ウェブ検索サービスの API 呼び出しに変換して、結果を得ます（一種のラッパーですね）。SQLite MCPサーバも同様で、リクエストを SQLite ライブラリが提供する API を使って実行します。
 
-アプリ側で、MCPサーバとのやり取りを司るモジュールは「MCPクライアント」と呼ばれます（いわゆるクライアント・サーバ・アーキテクチャです）。MCPクライアントは、MCP対応 LLMアプリに組み込まれた小さなモジュールで、MCPサーバのプロキシ的な存在。MCPサーバと LLM とのやりとりを仲介します。上の図では、MCPサーバそれぞれに MCPクライアントが１対１で対応していますが（なのでサーバ毎に別実装のクライアントが必要なようにも読めますが）、MCPクライアントの実装は共通です（サーバ毎に別インスタンスを生成します）。
+アプリ側で、MCPサーバとのやり取りを司るモジュールは「MCPクライアント」と呼ばれます（いわゆるクライアント・サーバ・アーキテクチャです）。MCPクライアントは、MCP対応 LLMアプリに組み込まれた小さなモジュールで、MCPサーバのプロキシ的な存在。MCPサーバと LLM とのやりとりを仲介します。なお上の図では、MCPサーバそれぞれに MCPクライアントが１対１で対応していますが（なのでサーバ毎に別実装のクライアントが必要なようにも読めますが）、MCPクライアントの実装は共通です（サーバ毎に別インスタンスを生成します）。
 
 
 この MCPクライアントの実装は SDK で提供されています（[Python client](https://github.com/modelcontextprotocol/python-sdk/tree/main/src/mcp/client)・[TypeScript client](https://github.com/modelcontextprotocol/typescript-sdk/tree/main/src/client)）。実装では、MCPクライアントは、MCPサーバとの仲介に加え、MCPサーバの初期化、つまり MCPサーバ毎のサブプロセスの生成と、その中でのサーバコードの実行開始の面倒もみます。サーバコード取得の定石は、[`uvx`](https://docs.astral.sh/uv/guides/tools/)や[`npx`](https://docs.npmjs.com/cli/v8/commands/npx)を利用することで、これにより、いちいち手作業でサーバをインストールすることなしに使えるようになります。
@@ -130,7 +130,7 @@ MCPフレームワークでは、外部機能は（2025年 1月時点での参�
 
 リモート MCP 接続を利用したシステム構成は、こんな感じになると思われます。
 
-![mcp-diagram-remote](/images/mcp-introduction/mcp-diagram-remote.png =550x)
+![mcp-diagram-plain](/images/mcp-introduction/mcp-diagram-remote.png =550x)
 
 現状では、例えば GitHub 機能を MCP 経由で利用するには、同じマシン上にサブプロセスを生成して、それが MCPクライアントからのリクエストを GitHub の API 呼び出しに変換していたわけですが、もし MCPクライアントが HTTP 経由のリモート・リクエストをサポートして、もし GitHub サーバが直接 MCPサーバとしても振る舞えれば（もしくは MCPサーバを並立できれば）、上の図のように構成が一段とシンプルになるわけです。
 
@@ -146,7 +146,7 @@ MCPフレームワークでは、外部機能は（2025年 1月時点での参�
 
 やや妄想過ぎかもですが💦、長く夢見られていたそんな未来を実現するための基盤技術の開発が、リモート MPC 接続を手始めに、今盛んに進められているのです。もしこういった世界が実現できれば、とても多くの可能性が開けていくのではないでしょうか！
 
-![robot-building-robot](/images/mcp-introduction/robot-building-robot.png)
+![mcp-diagram-plain](/images/mcp-introduction/robot-building-robot.png)
 
 > ウェブ API についても一覧等は存在しますが、それらから必要な機能を探し出して動的に追加利用する… とまでは至ってないです。でも今の時代には LLM があります。自然言語による自由気ままなプロンプトの内容から、必要なツール呼び出しを見出して実行できるのと同じように、与えられた作業に対して必要なサービスを見出して、それをネットから探し出して利用することが自律的にできるようになったら… そんな未来を想像しています。
 >> そもそも、LLM がそんなに頭がいいんなら、既存のウェブ API 呼び出しを直接 LLM にさせればいいんじゃね？ HTTP クライアントの機能だけ入れといて、あとは LLM に良きに計らってもらえば？ とかも考えたりもしますが、LLM で利用するためには、提供している機能と呼び出し方の適切な情報（信頼できるメタデータ）が必要で、認証やセキュリティーまわりも考慮すると、そんなに簡単ではない、、、たぶんそういう判断なのでしょう。
