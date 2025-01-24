@@ -58,7 +58,7 @@ const mcpServers: McpServersConfig = {
 };
 ```
 
-#### ユーティリティを用いた LangChain から MCP の呼び出し
+#### ユーティリティを用いた MCP から LangChain への橋渡し：
 
 ```python:Python
 from langchain_mcp_tools import convert_mcp_to_langchain_tools
@@ -90,7 +90,7 @@ try {
 }
 ```
 
-#### LangChain / ReAct Agent のセットアップ
+#### LangChain / ReAct Agent のセットアップ：
 
 ```python:Python
 from langchain.chat_models import init_chat_model
@@ -118,7 +118,7 @@ const agent = createReactAgent({
 });
 ```
 
-以上で、たとえば **「bbc.com のニュースヘッドラインを読んで、日本語で要約して」** といったクエリが実行できるようになりました。
+以上で、たとえば **「bbc.com のニュースヘッドラインを読んで、日本語で要約して」** といったクエリが実行できるようになりました！
 
 #### <!-- &ZeroWidthSpace; >>> -->​<!-- <-- <<< &ZeroWidthSpace; -->
 ![mcp-server-listing-sites](/images/langchain-mcp-tools/robot-langchain-tools.png)
