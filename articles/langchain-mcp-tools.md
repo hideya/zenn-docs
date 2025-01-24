@@ -8,12 +8,16 @@ published: true
 
 ## Quick Start!
 
-これから **「MCPサーバの機能を LangChain から簡単利用するためのユーティリティ」** と、それを使った LLM からの外部リソースの呼び出し方法をご紹介していくのですが、関連技術を既にご存知で **「手早く実際のコードの雰囲気を見てみたい！」** という方に向けて…
+これから **「MCPサーバの機能を LangChain から簡単利用するためのユーティリティ」** と、それを使った LLM からの外部リソースの呼び出し方法をご紹介していきます！が、関連技術を既にご存知で「手早く実際のコードの雰囲気を見てみたい！」という方に向けて、
 
-まず最初に、そのユーティリティを使って、LangChain の ReAct Agent を介して MCP の機能呼び出しを実現する方法の概略を、コードの実例と共に駆け足でご紹介します。
+**まず最初に、LangChain の ReAct Agent を介して MCP の機能呼び出しを実現する方法の概略を、コードの実例と共に駆け足でご紹介** しようと思います。
 
-**「最初は内容からじっくり理解したい」という方は、[次の節まで読み飛ばしてください](#%E2%80%8B)**。
+以下ではコードがバーっと出てきますが、難しそうだなんて思わないでください！
+以降の節で、その内容を詳細に説明していきます。
 
+**「内容からじっくり理解したい」という方は、[次の節まで読み飛ばしてOKです！](#%E2%80%8B)**
+
+では、使い方を手短に…
 
 #### シムテム要件：
 
@@ -42,10 +46,6 @@ mcp_configs = {
     'fetch': {
         'command': 'uvx',
         'args': ['mcp-server-fetch']
-    },
-    'filesystem': {
-        'command': 'npx',
-        'args': ['-y', '@modelcontextprotocol/server-filesystem', '.']
     }
 }
 ```
@@ -54,10 +54,6 @@ const mcpServers: McpServersConfig = {
   fetch: {
     command: 'uvx',
     args: ['mcp-server-fetch']
-  },
-  filesystem: {
-    command: 'npx',
-    args: ['-y', '@modelcontextprotocol/server-filesystem', '.']
   }
 };
 ```
@@ -69,7 +65,7 @@ from langchain_mcp_tools import convert_mcp_to_langchain_tools
     ︙
 try:
     tools, cleanup = await convert_mcp_to_langchain_tools(mcp_configs)
-        ︙<tools use>
+        ︙ tools の利用
 
 finally:
     if cleanup:
@@ -87,7 +83,7 @@ let mcpCleanup: McpServerCleanupFn | undefined;
 try {
   const { tools, cleanup } = await convertMcpToLangchainTools(mcpServers);
   mcpCleanup = cleanup
-    ︙<tools use>
+    ︙ tools の利用
 
 } finally {
   await mcpCleanup?.();
@@ -122,7 +118,7 @@ const agent = createReactAgent({
 });
 ```
 
-以上で、たとえば **「bbc.com のニュースヘッドラインを読んで、日本語で要約して」** といったクエリを実行できるようになりました。
+以上で、たとえば **「bbc.com のニュースヘッドラインを読んで、日本語で要約して」** といったクエリが実行できるようになりました。
 
 #### <!-- &ZeroWidthSpace; >>> -->​<!-- <-- <<< &ZeroWidthSpace; -->
 ![mcp-server-listing-sites](/images/langchain-mcp-tools/robot-langchain-tools.png)
@@ -202,7 +198,7 @@ MCPクライアントは、MCPサーバとの仲介に加え、MCPサーバ利�
 
 ![langchain-mcp-tools](/images/langchain-mcp-tools/langchain-mcp-tools.png =550x)
 
-つまり、MCPクライアントとその MCPサーバへのアクセスをひっくるめてラッピングして、LangChainが扱える Tool（Pythonの場合は`List[BaseTool]`、TypeScriptの場合は`StructuredTool[]`）に変換します。
+つまり、MCPクライアントとその MCPサーバへのアクセスをひっくるめて隠蔽して、LangChainが扱える Tool（Pythonの場合は`List[BaseTool]`、TypeScriptの場合は`StructuredTool[]`）に変換します。
 
 上述のように、MCPサーバ・プロセスの起動や初期化は MCPクライアントが面倒を見ますので、それらも含めて、MCPサーバを利用するためのもろもろの詳細を、まるごと隠蔽しているといえます。
 
@@ -449,7 +445,7 @@ MCPサーバ連携を色々簡単に試してみたいという方は、この�
 - ["MCP Client Using LangChain / TypeScript"](https://github.com/hideya/mcp-client-langchain-ts)
 
 
-## 実行ログで実際の挙動を確認
+## 実行ログでの実際の挙動の確認
 
 最後に、実際の挙動にご興味がある方向けに、以下では実行ログをご紹介しつつ、ポイントをまとめてみようと思います。
 
