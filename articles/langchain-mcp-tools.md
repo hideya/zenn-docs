@@ -1,5 +1,5 @@
 ---
-title: "【LangChain】の能力を 450+ の【MCP】ツール群で 一気に拡張する方法！🤩 ReAct Agent から使う！"
+title: "【LangChain】の能力を 450+ の【MCP】ツール群で 一気に拡張する方法！🤩 ReAct Agent と使う！"
 emoji: "🤖"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["LangChain", "MCP", "AIエージェント", "ReAct", "LLM" ]
