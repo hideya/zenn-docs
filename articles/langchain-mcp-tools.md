@@ -192,13 +192,13 @@ MCPクライアントは、MCPサーバとの仲介に加え、MCPサーバ利�
 ## 「MCP To LangChain Tools Conversion Utility」の概要
 
 まず、このユーティリティが何をするのか、その概要を図を使って簡単に説明します。
-以下の図をご覧ください。左側のアプリのハコの中の「LangChain」と「LangChainTool」に注目してください。
+以下の図をご覧ください。左側のアプリのハコの中の「LangChain」と「LangChain Tools」に注目してください。
 
 このユーティリティは、MCPサーバの設定情報を受け取り、内部で MCPクライアントを生成し、サーバを生成・初期化して、「LangChain で直接利用可能な Tool」にラッピングして返します。
 
 ![langchain-mcp-tools](/images/langchain-mcp-tools/langchain-mcp-tools.png =550x)
 
-つまり、MCPクライアントとその MCPサーバへのアクセスをひっくるめて隠蔽し、LangChainが扱える Tool（Pythonの場合は`List[BaseTool]`、TypeScriptの場合は`StructuredTool[]`）に変換します。
+つまり、MCPクライアントとその MCPサーバへのアクセスをひっくるめて隠蔽し、LangChainが扱える Tool（Pythonの場合は`List[BaseTool]`、TypeScriptの場合は`StructuredTool[]`）に変換します（通常１つの MCPサーバは複数の機能を提供しているので、それぞれを個別のツールとしてラップして、全サーバの分をまとめて配列で返します）。
 
 上述のように、MCPサーバ・プロセスの起動や初期化は MCPクライアントが面倒を見ますので、それらも含めて、MCPサーバを利用するためのもろもろの詳細を、まるごと隠蔽しているといえます。
 
