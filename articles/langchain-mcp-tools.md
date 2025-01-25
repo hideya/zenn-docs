@@ -8,7 +8,7 @@ published: true
 
 ## Quick Start!
 
-これから **「MCPサーバの機能を LangChain から簡単利用するためのユーティリティ」** と、それを使った LLM からの外部リソースの呼び出し方法をご紹介していきます！が、関連技術を既にご存知で「手早く実際のコードの雰囲気を見てみたい！」という方に向けて、
+これから **「多量に存在する MCPサーバ群の機能を LangChain から簡単利用するためのユーティリティ」** と、それを使った LLM からの外部リソースの呼び出し方法をご紹介していきます！が、関連技術を既にご存知で「手早く実際のコードの雰囲気を見てみたい！」という方に向けて、
 
 **まず最初に、LangChain の ReAct Agent を介して MCP の機能呼び出しを実現する方法の概略を、コードの実例と共に駆け足でご紹介** しようと思います。
 
@@ -90,7 +90,7 @@ try {
 }
 ```
 
-#### LangChain / ReAct Agent のセットアップ：
+#### LangChain / ReAct Agent のセットアップ例：
 
 ```python:Python
 from langchain.chat_models import init_chat_model
