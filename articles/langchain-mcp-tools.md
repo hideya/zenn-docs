@@ -335,7 +335,7 @@ MCPサーバの設定が済んでしまえば、ユーティリティ関数の�
 try:
     tools, cleanup = await convert_mcp_to_langchain_tools(mcp_configs)
     
-      ︙ MCPサーバの利用
+      ︙ MCPツールの利用
 
 finally:
     if cleanup is not None:
@@ -347,7 +347,7 @@ try {
   const { tools, cleanup } = await convertMcpToLangchainTools(mcpServers);
   mcpCleanup = cleanup;
 
-   ︙ MCPサーバの利用
+   ︙ MCPツールの利用
 
 } finally {
   await mcpCleanup?.();
@@ -359,13 +359,13 @@ try {
 **`cleanup`** は、MCPサーバの利用が終わった後で、サーバとのコネクションや使用リソースの開放をするために呼び出す`async`なコールバック関数です。典型的には`finally`ブロックで呼び出します。
 
 
-### LangChian / ReAct Agent での利用
+### LangChian / ReAct Agent での利用例
 
-それでは実際のコードで、この **`tool`** の LangChain での利用手順を見ていきましょう。
+それでは実際のコード例で、この **`tool`** を LangChain で利用する手順を見ていきましょう。
 
 以下の例では、使用する LLM として、Anthropic の `claude-3-5-haiku-latest` を、LangChain のユーティリティ関数を用いて初期化しています。
 
-実行は一時期特に話題だった[「ReAct エージェント」](https://sun-asterisk.com/service/development/viblo/reactagent/) を使っています。
+実行には一時期話題をさらった[「ReAct エージェント」](https://sun-asterisk.com/service/development/viblo/reactagent/) を使っています。
 
 ありがたいことに LangGraph（`langgraph.prebuilt`）で ReAct エージェント の初期化用関数が用意されています（Python：[`create_react_agent()`](https://api.python.langchain.com/en/latest/langchain/agents/langchain.agents.react.agent.create_react_agent.html)、TypeScript：[`createReactAgent()`](https://v03.api.js.langchain.com/functions/langchain.agents.createReactAgent.html)）。
 
