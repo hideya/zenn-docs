@@ -43,7 +43,7 @@ Please do the following:
 その実際の様子は、以下の Youtube で見ることができます👇
 「未来が来た〜！」と Youtuberさんも興奮気味です！早口すぎッ😅
 
-https://www.youtube.com/watch?v=5CmAKm1wWW0&t=723s
+[![david-youtube](/images/mcp-introduction/david-youtube.png =500x)](https://www.youtube.com/watch?v=5CmAKm1wWW0&t=723s)
 
 なお、同じことを自分で再現するには、「[Claude for Desktop](https://claude.ai/download)」（Claude PC / Mac アプリ）を有料プラン（Professional Plan）で使い、かつ、[GitHub MCPサーバ](https://github.com/modelcontextprotocol/servers/tree/main/src/github#setup) を [利用するための設定](https://modelcontextprotocol.io/quickstart/user) が必要になります。ムービーの前の方に説明があります。一度わかればとても簡単。僕も実際に試して同様の挙動を確認しました（もし需要があれば日本語での説明と実行状況をポストするかも…）
 
