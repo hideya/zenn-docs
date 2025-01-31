@@ -385,6 +385,8 @@ Tools Playbooksを外部システムと連携する手段
 
 [10分で分かる、watsonx Orchestrateの主要機能のご紹介](https://video.ibm.com/playlist/682425/video/133503510)
 
+Salesforce操作や、Product Upsell（顧客が以前購入した商品と同種で「より上位のもの」を提案すること） メール作成、メール送信
+
 - 特定のクロスセル条件を満たす顧客をSalesforceで検索
   - 操作にスキルが必要、時間がかかる
   - → チャット・インターフェースを提供
@@ -401,6 +403,10 @@ Tools Playbooksを外部システムと連携する手段
 チャット・インターフェースで、ステップにそって指示を出していく
 
 アップセル・クロスセルを例に、単一化されたインターフェイス内で一連のスキルをシーケンス化することで、エージェントの業務を合理化し、生産性を高めてエラーを減らし、より価値の高い業務に集中できるようにした。
+
+
+[アップセル・クロスセルとは？](https://willof-work.co.jp/salesmedia/article/4439/)
+
 
 
 
@@ -569,26 +575,11 @@ AI エージェントまわりは、本当に動きが激しいです。
 > 仕事の効率悪過ぎだと思う… 😓
 
 <!--------------------------------------------------------------------------------------------------------------------->
-# ---
 
-[LLMやAI エージェントの潮流とその先の展望（電通総研）](https://www.dentsusoken.com/case_report/research/20241223/2811.html)
+<!-- [LLMやAIエージェントの潮流とその先の展望（電通総研 2024年12月）](https://www.dentsusoken.com/case_report/research/20241223/2811.html) -->
 
-[AI連携とオーケストレーションのための基盤ビジョンLLM（NEC技報 2023年3月）](https://jpn.nec.com/techrep/journal/g23/n02/230218.html)
+<!-- [AI連携とオーケストレーションのための基盤ビジョンLLM（NEC技報 2023年3月）](https://jpn.nec.com/techrep/journal/g23/n02/230218.html) -->
 
-[マイクロソフトやNTTデータなど続々参入　まずは定型業務の自動化から](https://business.nikkei.com/atcl/NBD/19/special/02035/)
-
-
-Salesforce操作や、Product Upsell（顧客が以前購入した商品と同種で「より上位のもの」を提案すること） メール作成、メール送信
-
-[アップセル・クロスセルとは？](https://willof-work.co.jp/salesmedia/article/4439/)
-
-[AI連携とオーケストレーション](https://jpn.nec.com/techrep/journal/g23/n02/230218.html)
-
-[LLMやAIエージェントの潮流とその先の展望](https://www.dentsusoken.com/case_report/research/20241223/2811.html)
--「マシンワーカー」や「マシンカスタマー」といった新たな役割が社会に登場する可能性が議論
-
-[LLMやAI エージェントの潮流とその先の展望](https://www.dentsusoken.com/case_report/research/20241223/2811.html)
-
-[グラウンディング（Grounding）とは？その意味とビジネスへの影響](https://www.salesforce.com/jp/blog/jp-what-is-grounding/)
+<!-- [グラウンディング（Grounding）とは？その意味とビジネスへの影響](https://www.salesforce.com/jp/blog/jp-what-is-grounding/) -->
 
 <!--------------------------------------------------------------------------------------------------------------------->
