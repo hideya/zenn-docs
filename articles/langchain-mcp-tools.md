@@ -103,7 +103,7 @@ from langchain.chat_models import init_chat_model
 from langgraph.prebuilt import create_react_agent
     ︙
 llm = init_chat_model(
-    model='claude-3-5-haiku-latest',
+    model='claude-3-5-sonnet-latest',
     model_provider='anthropic'
 )
 
@@ -116,7 +116,7 @@ agent = create_react_agent(
 import { ChatAnthropic } from '@langchain/anthropic';
 import { createReactAgent } from '@langchain/langgraph/prebuilt';
     ︙
-const llm = new ChatAnthropic({ model: 'claude-3-5-haiku-latest' });
+const llm = new ChatAnthropic({ model: 'claude-3-5-sonnet-latest' });
 
 const agent = createReactAgent({
   llm,
@@ -369,7 +369,7 @@ try {
 
 それでは実際のコード例で、この **`tool`** を LangChain で利用する手順を見ていきましょう。
 
-以下の例では、使用する LLM として、Anthropic の `claude-3-5-haiku-latest` を、LangChain のユーティリティ関数を用いて初期化しています。
+以下の例では、使用する LLM として、Anthropic の `claude-3-5-sonnet-latest` を、LangChain のユーティリティ関数を用いて初期化しています。
 
 実行には一時期話題をさらった[「ReAct エージェント」](https://sun-asterisk.com/service/development/viblo/reactagent/) を使っています。
 
@@ -381,7 +381,7 @@ try {
 ```python:Python
 # from langchain.chat_models import init_chat_model
 llm = init_chat_model(
-    model='claude-3-5-haiku-latest',
+    model='claude-3-5-sonnet-latest',
     model_provider='anthropic'
 )
 
@@ -394,7 +394,7 @@ agent = create_react_agent(
 
 ```ts:TypeScript
 // import { ChatAnthropic } from '@langchain/anthropic';
-const llm = new ChatAnthropic({ model: 'claude-3-5-haiku-latest' });
+const llm = new ChatAnthropic({ model: 'claude-3-5-sonnet-latest' });
 
 // import { createReactAgent } from '@langchain/langgraph/prebuilt';
 const agent = createReactAgent({
