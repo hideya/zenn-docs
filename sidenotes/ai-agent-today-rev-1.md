@@ -723,7 +723,7 @@ Amazon による「Multi-Agent Orchestrator」の概要説明は以下のとお�
 これも YouTube でデモが公開されていますので、その内容を追いながら、実際の使い方の理解を深めようと思います。
 
 
-#### Multi-Agent Orchestrator での AI エージェント・システム 構築の実際
+#### Multi-Agent Collaboration での AI エージェント・システム 構築の実際
 
 実際それがどういったものなのか知るには、以下のムービーを観るのが手っ取り早いです（全体で8分弱です）。
  [**「Multi-Agent Collaboration with Amazon Bedrock」**](https://www.youtube.com/watch?v=tMqTy1HR974)。
