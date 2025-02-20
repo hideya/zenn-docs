@@ -1,5 +1,5 @@
 ---
-title: "【LangChain】の能力を 450+ の【MCP】ツールで 一気に爆充する！ ／ ReAct Agent で使ってみた（Py＆Ts）"
+title: "【LangChain】の能力を 800+ の【MCP】ツールで 一気に爆充する！ ／ ReAct Agent で使ってみた（Py＆Ts）"
 emoji: "🤖"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["LangChain", "MCP", "AIエージェント", "ReActエージェント", "LLM" ]
@@ -141,14 +141,14 @@ Anthropic が [2024年11月に発表](https://www.anthropic.com/news/model-conte
 
 LangGraph で提供されている **話題の [ReAct Agent](https://sun-asterisk.com/service/development/viblo/reactagent/) で実際に利用** してみたので、そのサンプルコードを用いて利用方法を以下で具体的に説明します。
 
-ちなみに **現時点で利用可能な機能群（MCPサーバ）の数は 450以上**。 ウェブ検索やブラウザ・オートメーション、DB アクセス、クラウド・サービス利用、SNS 連携 を含め、驚くほど多くの種類の外部機能が、誰でも LLM 連携できるように公開されています。ご参考までに以下に MCPサーバのまとめサイトをご紹介します：
+ちなみに **現時点で利用可能な機能群（MCPサーバ）の数は 800以上**。 ウェブ検索やブラウザ・オートメーション、DB アクセス、クラウド・サービス利用、SNS 連携 を含め、驚くほど多くの種類の外部機能が、誰でも LLM 連携できるように公開されています。ご参考までに以下に MCPサーバのまとめサイトをご紹介します：
 
 - [Glama’s list of Open-Source MCP servers](https://glama.ai/mcp/servers)
-- [awesome-mcp-servers](https://github.com/hideya/awesome-mcp-servers#Server-Implementations)
 - [Smithery: MCP Server Registry](https://smithery.ai/)
+- [awesome-mcp-servers](https://github.com/hideya/awesome-mcp-servers#Server-Implementations)
 - [MCP公式サイトの MCPサーバの例](https://modelcontextprotocol.io/examples)
 
-これら **450+の機能群（MCP サーバ）を LangChain からガッツリ使えるようにしちゃおう！** というのが、本ユーティリティの目論見です。
+これら **800+の機能群（MCP サーバ）を LangChain からガッツリ使えるようにしちゃおう！** というのが、本ユーティリティの目論見です。
 
 ![mcp-server-listing-sites](/images/mcp-introduction/mcp-server-listing-sites.png =650x)
 
@@ -435,7 +435,7 @@ const response = result.messages[result.messages.length - 1].content;
 
 つまり、**上の２つの MCPサーバを組み込むだけで、LLM アプリ外からの（ネットからの）情報の取得と、LLM アプリ外への情報の出力（ファイルの書き込み）ができるようになっちゃう** わけです。
 
-Google Drive、Slack、Notion、Spotify、Docker、PostgreSQL… などにアクセスするための MCPサーバが、450+以上利用できるとなると…
+Google Drive、Slack、Notion、Spotify、Docker、PostgreSQL… などにアクセスするための MCPサーバが、800+以上利用できるとなると…
 組み合わせると何が実現できるのか…
 妄想が膨らみます…！
 
