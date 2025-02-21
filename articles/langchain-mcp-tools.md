@@ -1,5 +1,5 @@
 ---
-title: "【LangChain】の能力を 800+ の【MCP】ツールで 一気に爆充する！ ／ ReAct Agent で使ってみた（Py＆Ts）"
+title: "【LangChain】の能力を 1500+ の【MCP】ツールで 一気に爆充する！ ／ ReAct Agent で使ってみた（Py＆Ts）"
 emoji: "🤖"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["LangChain", "MCP", "AIエージェント", "ReActエージェント", "LLM" ]
@@ -8,13 +8,13 @@ published: true
 
 ## 3行まとめ
 - LangChain から MCP を利用して外部機能を呼び出すコードが書けるようになる
-- Python ユーザ、TypeScript ユーザ、どちらもサポートしている
+- Python ユーザー、TypeScript ユーザー、どちらもサポートしている
 - MCP や MCP 連携を実現するライブラリの挙動についても理解が深まる
 
 
 ## Quick Start!
 
-これから **「多量に存在する MCPサーバ群の機能を LangChain から簡単利用するためのユーティリティ」** と、それを使った LLM からの外部リソースの呼び出し方法をご紹介していきます！が、関連技術を既にご存知で「手早く実際のコードの雰囲気を見てみたい！」という方に向けて、
+これから **「多量に存在する MCPサーバー群の機能を LangChain から簡単利用するためのユーティリティ」** と、それを使った LLM からの外部リソースの呼び出し方法をご紹介していきます！が、関連技術を既にご存知で「手早く実際のコードの雰囲気を見てみたい！」という方に向けて、
 
 **まず最初に、LangChain の ReAct Agent を介して MCP の機能呼び出しを実現する方法の概略を、コードの実例（Python・TypeScript 両方）と共に駆け足でご紹介** しようと思います。
 
@@ -28,8 +28,8 @@ published: true
 #### シムテム要件：
 
 - Python 3.11+ もしくは Node.js 16+
-- [uv のインストール](https://docs.astral.sh/uv/getting-started/installation/)（Pythonベースの MCPサーバの実行に使用）
-- npm 7+（Node.js ベースの MCPサーバの実行に使用）
+- [uv のインストール](https://docs.astral.sh/uv/getting-started/installation/)（Pythonベースの MCPサーバーの実行に使用）
+- npm 7+（Node.js ベースの MCPサーバーの実行に使用）
 
 #### インストレーション：
 
@@ -39,13 +39,13 @@ published: true
 
 ```bash:Python
 pip install langchain-mcp-tools
-# uvユーザは：uv add langchain-mcp-tools
+# uvユーザーは：uv add langchain-mcp-tools
 ```
 ```bash:TypeScript
 npm i @h1deya/langchain-mcp-tools
 ```
 
-#### MCPサーバの設定：
+#### MCPサーバーの設定：
 
 ```python:Python
 mcp_configs = {
@@ -103,7 +103,7 @@ from langchain.chat_models import init_chat_model
 from langgraph.prebuilt import create_react_agent
     ︙
 llm = init_chat_model(
-    model='claude-3-5-sonnet-latest',
+    model='claude-3-7-sonnet-latest',
     model_provider='anthropic'
 )
 
@@ -116,7 +116,7 @@ agent = create_react_agent(
 import { ChatAnthropic } from '@langchain/anthropic';
 import { createReactAgent } from '@langchain/langgraph/prebuilt';
     ︙
-const llm = new ChatAnthropic({ model: 'claude-3-5-sonnet-latest' });
+const llm = new ChatAnthropic({ model: 'claude-3-7-sonnet-latest' });
 
 const agent = createReactAgent({
   llm,
@@ -137,18 +137,18 @@ Anthropic が [2024年11月に発表](https://www.anthropic.com/news/model-conte
 ただ残念なのは、**MCP の作法に沿って使わないといけない**こと…
 う〜ん、**LangChain から楽に使いたい！** そう思い立って！ 作りました！
 
-**「MCPサーバの機能を LangChain から簡単利用するためのユーティリティ」**
+**「MCPサーバーの機能を LangChain から簡単利用するためのユーティリティ」**
 
 LangGraph で提供されている **話題の [ReAct Agent](https://sun-asterisk.com/service/development/viblo/reactagent/) で実際に利用** してみたので、そのサンプルコードを用いて利用方法を以下で具体的に説明します。
 
-ちなみに **現時点で利用可能な機能群（MCPサーバ）の数は 800以上**。 ウェブ検索やブラウザ・オートメーション、DB アクセス、クラウド・サービス利用、SNS 連携 を含め、驚くほど多くの種類の外部機能が、誰でも LLM 連携できるように公開されています。ご参考までに以下に MCPサーバのまとめサイトをご紹介します：
+ちなみに **現時点で利用可能な機能群（MCPサーバー）の数は 1500以上**。 ウェブ検索やブラウザ・オートメーション、DB アクセス、クラウド・サービス利用、SNS 連携 を含め、驚くほど多くの種類の外部機能が、誰でも LLM 連携できるように公開されています。ご参考までに以下に MCPサーバーのまとめサイトをご紹介します：
 
 - [Glama’s list of Open-Source MCP servers](https://glama.ai/mcp/servers)
 - [Smithery: MCP Server Registry](https://smithery.ai/)
 - [awesome-mcp-servers](https://github.com/hideya/awesome-mcp-servers#Server-Implementations)
-- [MCP公式サイトの MCPサーバの例](https://modelcontextprotocol.io/examples)
+- [MCP公式サイトの MCPサーバーの例](https://modelcontextprotocol.io/examples)
 
-これら **800+の機能群（MCP サーバ）を LangChain からガッツリ使えるようにしちゃおう！** というのが、本ユーティリティの目論見です。
+これら **1500+の機能群（MCP サーバー）を LangChain からガッツリ使えるようにしちゃおう！** というのが、本ユーティリティの目論見です。
 
 ![mcp-server-listing-sites](/images/mcp-introduction/mcp-server-listing-sites.png =650x)
 
@@ -156,7 +156,7 @@ LangGraph で提供されている **話題の [ReAct Agent](https://sun-asteris
 ## LangChain ✕ MCP どうやって？
 
 では、実際どうやるのでしょうか？
-とっても簡単です！ **このユーティリティで、MCPサーバの機能群（ツール）を LangChain が直接扱える Tool に変換** して、それを単に使えば OK！
+とっても簡単です！ **このユーティリティで、MCPサーバーの機能群（ツール）を LangChain が直接扱える Tool に変換** して、それを単に使えば OK！
 
 ユーティリティは Python 用 と TypeScript 用、両方用意してあります：
 
@@ -176,21 +176,21 @@ LangGraph で提供されている **話題の [ReAct Agent](https://sun-asteris
 
 ## MCP はどうやって外部ツールと連携しているのか？
 
-LLM と MCP 機能群（MCPサーバ）がどのように連携してるか、以下の図で説明します（なおこれは、2025年 1月時点での典型的な実装例です）。ちょっと長いですが、少し辛抱してお付き合いください…
+LLM と MCP 機能群（MCPサーバー）がどのように連携してるか、以下の図で説明します（なおこれは、2025年 1月時点での典型的な実装例です）。ちょっと長いですが、少し辛抱してお付き合いください…
 
 ![mcp-diagram-stdio](/images/mcp-introduction/mcp-diagram-stdio.png =550x)
 
-マシン（Your Computer）上で、LLM 利用アプリ（図の左側の LLM-powered App / LangChain で書かれたアプリも含む）が動いていたとすると、外部リソースへアクセスを仲介する「MCPサーバ」は、別プロセスとして動きます。たとえば、ウェブ検索 と SQLiteアクセスをするための MCPサーバを組み込んだ場合、それらは別プロセスとして動いて、LLM 利用アプリ側とは、標準入出力（`stdio`）を介してやりとりします（そのやりとりのプロトコルが狭義の MCP です）。
+マシン（Your Computer）上で、LLM 利用アプリ（図の左側の LLM-powered App / LangChain で書かれたアプリも含む）が動いていたとすると、外部リソースへアクセスを仲介する「MCPサーバー」は、別プロセスとして動きます。たとえば、ウェブ検索 と SQLiteアクセスをするための MCPサーバーを組み込んだ場合、それらは別プロセスとして動いて、LLM 利用アプリ側とは、標準入出力（`stdio`）を介してやりとりします（そのやりとりのプロトコルが狭義の MCP です）。
 
 > なぜそんな面倒なことしてるのか… 詳しく知りたい方は（ちゃんと理由があります）、**[こちらのドキュメント](https://zenn.dev/h1deya/articles/mcp-introduction)** をぜひご参照ください。ちょっと長いですが MCP 関する情報が包括的にまとめてあります。
 
-「MCPサーバ」は、典型的には Python や Node.js で記述された小規模なソフトウェアです。例えば上の図において、ウェブ検索 MCPサーバは、`stdio`を介して受け取ったリクエストを、ウェブ検索サービスの API 呼び出しに変換して、結果を得ます（一種のラッパーですね）。SQLite MCPサーバも同様で、リクエストを SQLite ライブラリが提供する API を使って実行します。
+「MCPサーバー」は、典型的には Python や Node.js で記述された小規模なソフトウェアです。例えば上の図において、ウェブ検索 MCPサーバーは、`stdio`を介して受け取ったリクエストを、ウェブ検索サービスの API 呼び出しに変換して、結果を得ます（一種のラッパーですね）。SQLite MCPサーバーも同様で、リクエストを SQLite ライブラリが提供する API を使って実行します。
 
-アプリ側で、MCPサーバとのやり取りを司るモジュールは「MCPクライアント」と呼ばれます（いわゆるクライアント・サーバ・アーキテクチャです）。MCPクライアントは、MCP対応 LLMアプリに組み込まれた小さなモジュールで、MCPサーバのプロキシ的な存在。MCPサーバと LLM とのやりとりを仲介します。
+アプリ側で、MCPサーバーとのやり取りを司るモジュールは「MCPクライアント」と呼ばれます（いわゆるクライアント・サーバー・アーキテクチャです）。MCPクライアントは、MCP対応 LLMアプリに組み込まれた小さなモジュールで、MCPサーバーのプロキシ的な存在。MCPサーバーと LLM とのやりとりを仲介します。
 
-なお上の図では、MCPサーバそれぞれに MCPクライアントが１対１で対応していますが（なのでサーバ毎に別実装のクライアントが必要なようにも読めますが）、MCPクライアントの実装は共通です（サーバ毎に別インスタンスを生成します）。
+なお上の図では、MCPサーバーそれぞれに MCPクライアントが１対１で対応していますが（なのでサーバー毎に別実装のクライアントが必要なようにも読めますが）、MCPクライアントの実装は共通です（サーバー毎に別インスタンスを生成します）。
 
-MCPクライアントは、MCPサーバとの仲介に加え、MCPサーバ利用開始時のサーバの初期化、つまり MCPサーバ毎のサブプロセスの生成と、その中でのサーバコードの実行開始の面倒もみます（なので MCPサーバが別プロセスで動いていることはそんなに意識することはありません）。サーバコード取得の定石は、[`uvx`](https://docs.astral.sh/uv/guides/tools/)や[`npx`](https://docs.npmjs.com/cli/v8/commands/npx)を利用することで、これにより、いちいち手作業でサーバをインストールすることなしに使えるようになります。
+MCPクライアントは、MCPサーバーとの仲介に加え、MCPサーバー利用開始時のサーバーの初期化、つまり MCPサーバー毎のサブプロセスの生成と、その中でのサーバーコードの実行開始の面倒もみます（なので MCPサーバーが別プロセスで動いていることはそんなに意識することはありません）。サーバーコード取得の定石は、[`uvx`](https://docs.astral.sh/uv/guides/tools/)や[`npx`](https://docs.npmjs.com/cli/v8/commands/npx)を利用することで、これにより、いちいち手作業でサーバーをインストールすることなしに使えるようになります。
 
 ちっと長かったですが、これで MCPの挙動の基本的な知識はカバーできました。お疲れ様でした！
 
@@ -200,20 +200,20 @@ MCPクライアントは、MCPサーバとの仲介に加え、MCPサーバ利�
 まず、このユーティリティが何をするのか、その概要を図を使って簡単に説明します。
 以下の図をご覧ください。左側のアプリのハコの中の「LangChain」と「LangChain Tools」に注目してください。
 
-このユーティリティは、MCPサーバの設定情報を受け取り、内部で MCPクライアントを生成し、サーバを生成・初期化して、「LangChain で直接利用可能な Tool」にラッピングして返します。
+このユーティリティは、MCPサーバーの設定情報を受け取り、内部で MCPクライアントを生成し、サーバーを生成・初期化して、「LangChain で直接利用可能な Tool」にラッピングして返します。
 
 ![langchain-mcp-tools](/images/langchain-mcp-tools/langchain-mcp-tools.png =550x)
 
-つまり、MCPクライアントとその MCPサーバへのアクセスをひっくるめて隠蔽し、LangChainが扱える Tool（Pythonの場合は`List[BaseTool]`、TypeScriptの場合は`StructuredTool[]`）に変換します（通常１つの MCPサーバは複数の機能を提供しているので、それぞれを個別のツールとしてラップして、全サーバの分をまとめて配列（`List`/`Array`）で返します）。
+つまり、MCPクライアントとその MCPサーバーへのアクセスをひっくるめて隠蔽し、LangChainが扱える Tool（Pythonの場合は`List[BaseTool]`、TypeScriptの場合は`StructuredTool[]`）に変換します（通常１つの MCPサーバーは複数の機能を提供しているので、それぞれを個別のツールとしてラップして、全サーバーの分をまとめて配列（`List`/`Array`）で返します）。
 
-上述のように、MCPサーバ・プロセスの起動や初期化は MCPクライアントが面倒を見ますので、それらも含めて、MCPサーバを利用するためのもろもろの詳細を、まるごと隠蔽しているといえます。
+上述のように、MCPサーバー・プロセスの起動や初期化は MCPクライアントが面倒を見ますので、それらも含めて、MCPサーバーを利用するためのもろもろの詳細を、まるごと隠蔽しているといえます。
 
 この変換は、ユーティリティ関数の呼び出し一発！で行えます（両方とも`async`です）：
 
 - Pythonの場合は **`convert_mcp_to_langchain_tools()`**
 - TypeScriptの場合は **`convertMcpToLangchainTools()`**
 
-引数には、使いたい MCPサーバを初期化するための情報を与えます（複数サーバ対応）。
+引数には、使いたい MCPサーバーを初期化するための情報を与えます（複数サーバー対応）。
 以下では具体的な例を用いて、その利用方法や実行結果を、やや細かめに説明します。
 
 
@@ -222,15 +222,15 @@ MCPクライアントは、MCPサーバとの仲介に加え、MCPサーバ利�
 シムテム要件は以下のとおりです：
 
 - Python 3.11+ もしくは Node.js 16+
-- [uv のインストール](https://docs.astral.sh/uv/getting-started/installation/)（Python ベースの MCPサーバの実行に `uvx` を使用）
-- npm 7+（Node.js ベースの MCPサーバの実行に `npx` を使用）
+- [uv のインストール](https://docs.astral.sh/uv/getting-started/installation/)（Python ベースの MCPサーバーの実行に `uvx` を使用）
+- npm 7+（Node.js ベースの MCPサーバーの実行に `npx` を使用）
 
 
 利用に先立って、まずユーティリティをインストールします：
 
 ```bash:Python
 pip install langchain-mcp-tools
-# uvユーザは：uv add langchain-mcp-tools
+# uvユーザーは：uv add langchain-mcp-tools
 ```
 
 ```bash:TypeScript
@@ -296,15 +296,15 @@ try {
 ```
 
 
-### MCPサーバの設定
+### MCPサーバーの設定
 
-この例では、MCPサーバとして、以下の２つを設定しています：
+この例では、MCPサーバーとして、以下の２つを設定しています：
 - **`fetch`**：ネットから特定のページを読み出す機能
 - **`filesystem`**：ローカルファイルの読み書き等の操作機能
 
-それぞれの MCPサーバの実装は、[**PyPI**（Python Package Index）](https://pypi.org/) と [**npmjs**（Node Package Manager 用パッケージリポジトリ）](https://www.npmjs.com/) で提供されており、ここではそれを活用します。
+それぞれの MCPサーバーの実装は、[**PyPI**（Python Package Index）](https://pypi.org/) と [**npmjs**（Node Package Manager 用パッケージリポジトリ）](https://www.npmjs.com/) で提供されており、ここではそれを活用します。
 
-各サーバの設定を詳しく見ていきましょう。
+各サーバーの設定を詳しく見ていきましょう。
 まず **`fetch`** の場合を見てみます：
 ```ts
   fetch: {
@@ -313,12 +313,12 @@ try {
   },
 ```
 **`command`** が **`uvx`** 、**`args`** が **`mcp-server-fetch`** となっています。
-これはどういう意味かというと、**Fetch MCPサーバ** の初期化の際、生成（spawn）したサププロセスのシェルで、「 **`uvx mcp-server-fetch`** 」を実行する、つまり PyPI から [**Fetch MCPサーバの実装 `mcp-server-fetch`**](https://pypi.org/project/mcp-server-fetch/) を読み込んで、実行することを意味します。
+これはどういう意味かというと、**Fetch MCPサーバー** の初期化の際、生成（spawn）したサププロセスのシェルで、「 **`uvx mcp-server-fetch`** 」を実行する、つまり PyPI から [**Fetch MCPサーバーの実装 `mcp-server-fetch`**](https://pypi.org/project/mcp-server-fetch/) を読み込んで、実行することを意味します。
 **[`uvx`](https://docs.astral.sh/uv/guides/tools/)** を使っているので、**実行には [`uv`](https://docs.astral.sh/uv/) のインストールが必要** です。
 
 > **[`uvx`](https://docs.astral.sh/uv/guides/tools/)** は比較的新しいツールで、2024年2月に発表された **[`uv`](https://docs.astral.sh/uv/)** にバンドルされています。
 > `uv` は `pip` に相当するツールなのですが、「pip より 10〜100倍早い」そうです。いやマジ早いです！ 僕は最近は`pip`ではなく、極力`uv`を使うようにしています。
->  **`uvx`** は、PyPI でホストされた Pythonパッケージを取得してそのまま実行するためのコマンドです。つまり`pip`で手動でインストールしてからコマンドを実行するのではなく、パッケージを取得した後、そのまま実行します。MCPサーバのような小規模なパッケージの実行にはもってこいです。
+>  **`uvx`** は、PyPI でホストされた Pythonパッケージを取得してそのまま実行するためのコマンドです。つまり`pip`で手動でインストールしてからコマンドを実行するのではなく、パッケージを取得した後、そのまま実行します。MCPサーバーのような小規模なパッケージの実行にはもってこいです。
 
 
 次に **`filesystem`** の部分を見てみましょう：
@@ -328,14 +328,14 @@ try {
     args: ['-y', '@modelcontextprotocol/server-filesystem', '.']
   },
 ```
-こちらは **Filesystem MCPサーバ** の起動時に「 **`npx -y @modelcontextprotocol/server-filesystem .`** 」を実行するよう指定しています。
-つまり、spawn した MCPサーバのシェルから、**[`npx`](https://docs.npmjs.com/cli/v8/commands/npx)**（`uvx`に相当）を用い、**npmjs** から [**Filesystem MCPサーバの実装 `@modelcontextprotocol/server-filesyste`**](https://www.npmjs.com/package/@modelcontextprotocol/server-filesystem) を取得して、直接実行するよう設定しています。
+こちらは **Filesystem MCPサーバー** の起動時に「 **`npx -y @modelcontextprotocol/server-filesystem .`** 」を実行するよう指定しています。
+つまり、spawn した MCPサーバーのシェルから、**[`npx`](https://docs.npmjs.com/cli/v8/commands/npx)**（`uvx`に相当）を用い、**npmjs** から [**Filesystem MCPサーバーの実装 `@modelcontextprotocol/server-filesyste`**](https://www.npmjs.com/package/@modelcontextprotocol/server-filesystem) を取得して、直接実行するよう設定しています。
 
-なお最初の引数`-y`は、`npx`がユーザとのインタラクション無しに実行することを指示するオプションで、最後の「`.`」は、Filesystem MCPサーバが操作できるディレクトリのトップディレクトリを、アプリを動かした時のカレントディレクトリにすることを指定しています（**ファイルの削除もできちゃうので、指定には注意してください**）。
+なお最初の引数`-y`は、`npx`がユーザーとのインタラクション無しに実行することを指示するオプションで、最後の「`.`」は、Filesystem MCPサーバーが操作できるディレクトリのトップディレクトリを、アプリを動かした時のカレントディレクトリにすることを指定しています（**ファイルの削除もできちゃうので、指定には注意してください**）。
 
 ### MCP To LangChain Tools Conversion Utility の呼び出し
 
-MCPサーバの設定が済んでしまえば、ユーティリティ関数の利用自体は簡単です！
+MCPサーバーの設定が済んでしまえば、ユーティリティ関数の利用自体は簡単です！
 
 ```python:Python
 try:
@@ -362,14 +362,14 @@ try {
 
 ここれ返された **`tools`** は、Pythonの場合は **`List[BaseTool]`** 、TypeScriptの場合は **`StructuredTool[]`** で、そのまま LangChain で使うことができます。
 
-**`cleanup`** は、MCPサーバの利用が終わった後で、サーバとのコネクションや使用リソースの開放をするために呼び出す`async`なコールバック関数です。典型的には`finally`ブロックで呼び出します。
+**`cleanup`** は、MCPサーバーの利用が終わった後で、サーバーとのコネクションや使用リソースの開放をするために呼び出す`async`なコールバック関数です。典型的には`finally`ブロックで呼び出します。
 
 
 ### LangChian / ReAct Agent での利用例
 
 それでは実際のコード例で、この **`tool`** を LangChain で利用する手順を見ていきましょう。
 
-以下の例では、使用する LLM として、Anthropic の `claude-3-5-sonnet-latest` を、LangChain のユーティリティ関数を用いて初期化しています。
+以下の例では、使用する LLM として、Anthropic の `claude-3-7-sonnet-latest` を、LangChain のユーティリティ関数を用いて初期化しています。
 
 実行には一時期話題をさらった[「ReAct エージェント」](https://sun-asterisk.com/service/development/viblo/reactagent/) を使っています。
 
@@ -381,7 +381,7 @@ try {
 ```python:Python
 # from langchain.chat_models import init_chat_model
 llm = init_chat_model(
-    model='claude-3-5-sonnet-latest',
+    model='claude-3-7-sonnet-latest',
     model_provider='anthropic'
 )
 
@@ -394,7 +394,7 @@ agent = create_react_agent(
 
 ```ts:TypeScript
 // import { ChatAnthropic } from '@langchain/anthropic';
-const llm = new ChatAnthropic({ model: 'claude-3-5-sonnet-latest' });
+const llm = new ChatAnthropic({ model: 'claude-3-7-sonnet-latest' });
 
 // import { createReactAgent } from '@langchain/langgraph/prebuilt';
 const agent = createReactAgent({
@@ -433,9 +433,9 @@ const response = result.messages[result.messages.length - 1].content;
 
 実際このクエリーを実行すると（ファイル書き込みがあるので注意！）、指示どおり **「bbc.com のニュースヘッドラインを読んで、日本語で要約して、bbc-news.txt という名前のファイルとして、カレントディレクトリ（このデモを起動したディレクトリ）に保存」** します。
 
-つまり、**上の２つの MCPサーバを組み込むだけで、LLM アプリ外からの（ネットからの）情報の取得と、LLM アプリ外への情報の出力（ファイルの書き込み）ができるようになっちゃう** わけです。
+つまり、**上の２つの MCPサーバーを組み込むだけで、LLM アプリ外からの（ネットからの）情報の取得と、LLM アプリ外への情報の出力（ファイルの書き込み）ができるようになっちゃう** わけです。
 
-Google Drive、Slack、Notion、Spotify、Docker、PostgreSQL… などにアクセスするための MCPサーバが、800+以上利用できるとなると…
+Google Drive、Slack、Notion、Spotify、Docker、PostgreSQL… などにアクセスするための MCPサーバーが、1500+以上利用できるとなると…
 組み合わせると何が実現できるのか…
 妄想が膨らみます…！
 
@@ -446,7 +446,7 @@ Google Drive、Slack、Notion、Spotify、Docker、PostgreSQL… などにアク
 - [Python](https://github.com/hideya/langchain-mcp-tools-py-usage/blob/main/src/example.py)（"Simple MCP Client Using LangChain / Python"）
 - [TypeScript](https://github.com/hideya/langchain-mcp-tools-ts-usage/blob/main/src/index.ts)（"Simple MCP Client Using LangChain / TypeScript"）
 
-MCPサーバ連携を色々簡単に試してみたいという方は、このユーティリティを使って作成した、以下の簡単な LangChain アプリを試してみてください：
+MCPサーバー連携を色々簡単に試してみたいという方は、このユーティリティを使って作成した、以下の簡単な LangChain アプリを試してみてください：
 - ["MCP Client Using LangChain / Python"](https://github.com/hideya/mcp-client-langchain-py)
 - ["MCP Client Using LangChain / TypeScript"](https://github.com/hideya/mcp-client-langchain-ts)
 
@@ -511,18 +511,18 @@ bbc.com のニュースヘッドラインを読んで、日本語で要約して
 [info] MCP server "fetch": session closed
 ```
 
-実行を開始するとまず、指定した内容に沿って、MCPサーバの初期化を開始している様子が伺えます。
+実行を開始するとまず、指定した内容に沿って、MCPサーバーの初期化を開始している様子が伺えます。
 
-１つの MCPサーバは、複数の機能（MCP でいうところの tool）を実装します。
+１つの MCPサーバーは、複数の機能（MCP でいうところの tool）を実装します。
 
-Fetch MCPサーバの場合は `fetch` １つだけ。
-Filesystem MCPサーバの場合は `read_file`、`write_file` など、計 11 のファイル関連の操作を実装しています。
+Fetch MCPサーバーの場合は `fetch` １つだけ。
+Filesystem MCPサーバーの場合は `read_file`、`write_file` など、計 11 のファイル関連の操作を実装しています。
 
 これら計 12 の機能が、それぞれ個別の LangChain Tool に変換されます。
 
 初期化が終わったら、ReAct エージェントにプロンプトを食わせます。
 
-すると、プロンプトの内容から、 `www.bbc.com` ページの取得が必要と判断して `fetch`MCPサーバの`fetch`ツールを呼び出し、結果を得ます：
+すると、プロンプトの内容から、 `www.bbc.com` ページの取得が必要と判断して `fetch`MCPサーバーの`fetch`ツールを呼び出し、結果を得ます：
 
 ```
 [info] MCP tool "fetch"/"fetch" received input: {
@@ -534,7 +534,7 @@ Filesystem MCPサーバの場合は `read_file`、`write_file` など、計 11 �
 [info] MCP tool "fetch"/"fetch" received result (length: 5305)
 ```
 
-次にエージェント、は取得した内容を日本語で要約した結果をファイルに保存する必要を認識して、`filesystem`MCPサーバの`write_file`ツールを呼び出します。
+次にエージェント、は取得した内容を日本語で要約した結果をファイルに保存する必要を認識して、`filesystem`MCPサーバーの`write_file`ツールを呼び出します。
 
 
 ```
@@ -549,14 +549,14 @@ Filesystem MCPサーバの場合は `read_file`、`write_file` など、計 11 �
 > ひとつ興味深い点として、ログをよく見ると、書き込みの後に、検証読み込みを行っています。これは ReAct Agent が自律的にエラーチェックをしていると考えられ、 その能力の高さを示しているようにも思われます。しかしながら、同じ内容のクエリーを英語で試したら（内容を単に「要約して保存」と変更して）この検証読み込みは行われませんでした。。ReAct Agent は、やや気分屋さんなのかもしれません（本当？）
 > > もしかしたら日本語でクエリーすると、作業クオリティにうるさめな日本人向けに LLM が気を利かせて（！）挙動を変更しているのかもしれません…（妄想過ぎ？？）
 
-保存が確認できたら、LLM はユーザにその旨返答します。
+保存が確認できたら、LLM はユーザーにその旨返答します。
 
-このサンプルアプリでは、これで処理を終了し、`cleanup`を呼び出して、MCPサーバとのセッションを終了しています。
+このサンプルアプリでは、これで処理を終了し、`cleanup`を呼び出して、MCPサーバーとのセッションを終了しています。
 
 
 ## おわりに
 
-以上、MCPサーバが提供する膨大な量の外部機能を LangChain から簡単に使えるようにするユーティリティの利用方法を説明いたしました。
+以上、MCPサーバーが提供する膨大な量の外部機能を LangChain から簡単に使えるようにするユーティリティの利用方法を説明いたしました。
 
 長かったですが😅、みんさんの 想像力 + 創造力 を少しでも掻き立てられたなら、とってもうれしいです！
 
