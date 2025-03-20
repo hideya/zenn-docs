@@ -45,22 +45,31 @@ Please do the following:
 
 [![david-youtube](/images/mcp-introduction/david-youtube.png =500x)](https://www.youtube.com/watch?v=5CmAKm1wWW0&t=723s)
 
-なお、同じことを自分で再現するには、「[Claude for Desktop](https://claude.ai/download)」（Claude PC / Mac アプリ）を有料プラン（Professional Plan）で使い、かつ、[GitHub MCPサーバー](https://github.com/modelcontextprotocol/servers/tree/main/src/github#setup) を [利用するための設定](https://modelcontextprotocol.io/quickstart/user) が必要になります。ムービーの前の方に説明があります。一度わかればとても簡単。僕も実際に試して同様の挙動を確認しました（もし需要があれば日本語での説明と実行状況をポストするかも…）
+> 要点は（MCP が、というよりは、Tool Calling（後述）の類一般についての話になりますが）：
+> 1. LLM はユーザーが自然言語で出した指示の内容を理解し
+> 1. LLM 自身で対応できる要望（コードの生成等）には対応し（ここまでは従来の LLM ChatBot と同じ）
+> 1. 要望を実現するためには外部機能（GitHub）の呼び出しが必要と判断した場合には、適切な機能を選択し
+> 1. その呼び出しで要求されるパラメータ形式に合うようにユーザーの要望を翻訳・変換し
+> 1. 外部機能を呼び出し、返されてくる呼び出し結果を理解し、次の思考・行動につなげる
+> 
+> という一連の処理を、ユーザーの要望を完遂するまで自動で繰り返しているところです。
+
+なお、上のデモと同じことを再現するには、「[Claude for Desktop](https://claude.ai/download)」（Claude PC / Mac アプリ）を有料プラン（Professional Plan）で使い、かつ、[GitHub MCPサーバー](https://github.com/modelcontextprotocol/servers/tree/main/src/github#setup) を [利用するための設定](https://modelcontextprotocol.io/quickstart/user) が必要になります。ムービーの前の方に説明があります。一度わかればとても簡単。僕も実際に試して同様の挙動を確認しました！
 
 
-## 1500 以上の MCP サーバーが利用可能！
+## 2000 以上の MCP サーバーが利用可能！
 
 GitHub だけじゃないんです！
-発表されてからまだそんなに経っていない MCP ですが、既に多数の MCPサーバーが、開発・公開されています。たとえば、Google Drive、Slack、Notion、Spotify、Docker、PostgreSQL などなど… ウェブ検索やブラウザ・オートメーション、DB アクセス、クラウド・サービス利用、SNS 連携 を含め、驚くほど多くの種類があります。以下に MCPサーバーのまとめサイトをご紹介します：
+発表されてからそんなに経っていない MCP ですが、既に多数の MCPサーバーが、開発・公開されています。たとえば、Google Drive、Slack、Notion、Spotify、Docker、PostgreSQL などなど… ウェブ検索やブラウザ・オートメーション、DB アクセス、クラウド・サービス利用、SNS 連携 を含め、驚くほど多くの種類があります。以下に MCPサーバーのまとめサイトをご紹介します：
 
-- [Glama’s list of Open-Source MCP servers](https://glama.ai/mcp/servers)
+- [MCP.so - Find Awesome MCP Servers and Clients](https://mcp.so/)
 - [Smithery: MCP Server Registry](https://smithery.ai/)
-- [awesome-mcp-servers](https://github.com/hideya/awesome-mcp-servers#Server-Implementations)
+- [pulse - Browse and discover MCP use cases, servers, clients, and news](https://www.pulsemcp.com/)
 - [MCP公式サイトの MCPサーバーの例](https://modelcontextprotocol.io/examples)
 
 ![mcp-diagram-plain](/images/mcp-introduction/mcp-server-listing-sites.png =650x)
 
-ご覧のように、すでに 1500 以上もの MCPサーバーが利用できるんです！
+ご覧のように、すでに 2000 以上もの MCPサーバーが利用できるんです！（誰でも開発・登録できるので、いわゆる「野良 MCPサーバ」も多く含まれているだろうことを考慮する必要はありますが）
 これらを組み合わせるとどんなことが実現できるか… 想像するだけでもワクワクしてきませんか…？
 
 
@@ -87,9 +96,9 @@ MCPフレームワークでは、外部機能は（2025年 1月時点での参�
 
 ここで「標準入出力（`stdio`）を介してやり取り」というところでピンときた方も多いかと思いますが、この実装は 最初期バージョンで、当然のごとく、HTTP を介したネットワーク越しのやり取りの実現が計画されています（後述）。
 
-> 実際、[Python Client SDK](https://github.com/modelcontextprotocol/python-sdk/tree/main/src/mcp/client) と [TypeScript Client SDK](https://github.com/modelcontextprotocol/typescript-sdk/tree/main/src/client) の実装をのぞいてみると、HTTPプロトコル用の実装（`sse.py` と `sse.ts`）がすでに存在します。この「sse」は「Server-Sent Events」のことで、コメントによると「メッセージの受信には Server-Sent Events を使用、送信には個別の POST リクエストを使用」とのことです。認証まわりの標準化が未完成なので（後述）、まだ公には利用を勧めていないのだと思われます。
+> 実際、[Python Client SDK](https://github.com/modelcontextprotocol/python-sdk/tree/main/src/mcp/client) と [TypeScript Client SDK](https://github.com/modelcontextprotocol/typescript-sdk/tree/main/src/client) の実装をのぞいてみると、HTTPプロトコル用の実装（`sse.py` と `sse.ts`）がすでに存在します。この「sse」は「Server-Sent Events」のことで、コメントによると「メッセージの受信には Server-Sent Events を使用、送信には個別の POST リクエストを使用」とのことです。ただ、[現状の実装はステートフルでサーバーレスなデプロイメントに制限があるのが良くないと議論](https://github.com/modelcontextprotocol/specification/discussions/102)になっており、また認証まわりの標準化が未完成なので（後述）、まだ公には利用を勧めていないのだと思われます。
 
-ちなみに、MCPクライアントをサポートするアプリの一覧は [こちらです](https://github.com/modelcontextprotocol/docs/blob/main/clients.mdx)。数的にもまだまだですが、今後増えていくことを願っています。なお、現時点でちゃんと有意義に使えるのことを自分自身で確認したのは「[Claude for Desktop](https://claude.ai/download)」だけです。
+ちなみに、MCPクライアントをサポートするアプリの一覧は [こちらです](https://github.com/modelcontextprotocol/docs/blob/main/clients.mdx)。数的にもまだまだですが、今後増えていくことを願っています（ちなみに現時点でちゃんと使えることを自分自身で確認したのは「[Claude for Desktop](https://claude.ai/download)」だけです）。
 
 > 脇道：「MCP」の「P」は「Protocol」の「P」。では「MCP Protocol」とは、こはいかに？！ …でも、[本家の資料](https://modelcontextprotocol.io/introduction) もそうなってるんで、エキスパート的にも英語的にも問題はないのでしょう… 
 おっとそういえば！「HTTP Protocol」って自分も平気で言ってる〜 😅
@@ -160,14 +169,14 @@ MCPフレームワークでは、外部機能は（2025年 1月時点での参�
 
 で、MCP の魅力と可能性に影響されまくって！勢い余って！ LangChain から MCPサーバーを簡単に使うためのライブラリを作っちゃいました…😳
 
-だって 1500+もの機能がそろった MCPサーバーを活用したアプリを、できるだけ楽に作りたいじゃないですか。で、LLM アプリの作成といえば [LangChain](https://www.langchain.com/)。LangChain のツール呼び出しで MCPサーバーが簡単に呼び出せれば、これはうれしいはずだ！ ということで、早速作って以下で公開しました：
+だって 2000+もの機能がそろった MCPサーバーを活用したアプリを、できるだけ楽に作りたいじゃないですか。で、LLM アプリの作成といえば [LangChain](https://www.langchain.com/)。LangChain のツール呼び出しで MCPサーバーが簡単に呼び出せれば、これはうれしいはずだ！ ということで、早速作って以下で公開しました：
 - **"MCP To LangChain Tools Conversion Utility"** :
   - [Python (PyPI)](https://pypi.org/project/langchain-mcp-tools/)
   - [TypeScript (npmjs)](https://www.npmjs.com/package/@h1deya/langchain-mcp-tools)
 
 この **ライブラリの利用方法の記事** も書きました！ もしよろしければ、ぜひ 👇
 
-- [**「【LangChain】の能力を 1500+ の【MCP】ツールで 一気に爆充する！ ／ ReAct Agent で使ってみた（Py＆Ts）」**](https://zenn.dev/h1deya/articles/langchain-mcp-tools)
+- [**「【LangChain】の能力を 2000+ の【MCP】ツールで 一気に爆充する！ ／ ReAct Agent で使ってみた（Py＆Ts）」**](https://zenn.dev/h1deya/articles/langchain-mcp-tools)
 
 くわえて、このライブラリを使って、簡単な MCPサーバー対応 AIチャットアプリ（コマンドライン・ベース）も作りました。このMCPクライアントを使えば、Claude for Desktop を使わなくても色々な MCPサーバーで遊ぶことができます：
 - **"MCP Client Using LangChain"** :
@@ -181,11 +190,13 @@ MCP の凄さや可能性についてバンバン盛り上げて書き下して�
 
 MCP はいくらオープンソースとはいえ Anthoropic 主導の技術なので、果たして、他の LLM プロバイダー、特に大物 OpenAI がどう出るか…？ 独自の対抗馬を出してくるのか…？ 現時点ではまだ情報は見当たりません。要注目です。
 
-あと、上で GitHub の例を出しましたが、今出ている GitHub MCPサーバーは、GitHubが出したオフィシャル版、というわけではありません。「すで多量の MCPサーバーが！」と盛り上げましたが、API が公開された既存のサービスに対する MCPサーバーを書くのはそんなに難しくないので（要はラッパーなので）、MCP がオープンソースということもあり、「こいつとの連携が欲しい！」と思った人が、勝手にバンバン作った結果、ともいえます（それでもその勢いや、それらがもたらす利便性はすごいですが！）。
+> ちなみに OpenAI は、2024年10月に「**Swarm**」と呼ばれる マルチエージェント・オーケストレーション・フレームワーク（雑にいって LangChain / LangGraph みたいなもの）をオープンソースとして公開していますが（[github](https://github.com/openai/swarm)）、2025年3月時点でも「experimental, educational」の但し書きは消えず、githubの活動も、2024年10月のコミットを最後に動きがないです。なおこれには、ネット越しのリソースアクセスの直接的なサポートはないようです。これは捨てて、より戦略的な何かを出してくるのでしょうか…？
+
+> 追記：OpenAI は 2025年3月に[「Responses API / Agents SDK」を発表](https://openai.com/ja-JP/index/new-tools-for-building-agents/)しました（具体的な技術内容については[こちらの Zenn記事](https://zenn.dev/chips0711/articles/2876f478164f28)が詳しいです）。どうやら彼らは（当然に）彼らの世界を中心に（外部機能呼び出しには [Function Calling](https://platform.openai.com/docs/guides/function-calling?api-mode=chat) を使い、利用価値の高いツール（外部呼び出し）は実装を提供していくという方向で）AIエージェント構築フレームワークを育てていくようです。「MCP → Function Calling 変換ライブラリ」とかいうのを書いてみたい気もしてきます。OpenAI のクローズドな世界に加担するのもアレですが。。
+
+あと、上で GitHub の例を出しましたが、今出ている GitHub MCPサーバーは、GitHubが出したオフィシャル版、というわけではありません（Anthropic が提供したものです）。「すで多量の MCPサーバーが！」と盛り上げましたが、API が公開された既存のサービスに対する MCPサーバーを書くのはそんなに難しくないので（要はラッパーなので）、MCP がオープンソースということもあり、「こいつとの連携が欲しい！」と思った人が、勝手にバンバン作った結果、ともいえます（それでもその勢いや、それらがもたらす利便性はすごいですが！）。
 
 では、GitHub がオフィシャル版を出してくるか？ より重要な質問は、「果たして GitHub は リモートMCPサーバー をホストするのか？」ですが、GitHub は Microsoft 傘下で、Microsoft は OpenAI に出資しているので、OpenAI の意向に沿った感じになるのではないか… と思われます。
-
-> ちなみに OpenAI は、2024年10月に「**Swarm**」と呼ばれる マルチエージェント・オーケストレーション・フレームワーク（雑にいって LangChain / LangGraph みたいなもの）をオープンソースとして公開していますが（[github](https://github.com/openai/swarm)）、2025年2月時点でも「experimental, educational」の但し書きは消えず、githubの活動も、2024年10月のコミットを最後に動きがないです。なおこれには、ネット越しのリソースアクセスの直接的なサポートはないようです。これは捨てて、より戦略的な何かを用意してくるのでしょうか…？
 
 「リモートMCPサーバー」が広まると本当に素晴らしいのですが、それはオフィシャルでしかサポートできないので（コミュニティが勝手に、とはいかないので）、上述のような、大いに政治的な話が関わってくると思います（みんなの技術で社会を豊かに企業政治なんてクソ喰らえな僕にとっては悲しい現実なのですが、それが現実です。。）
 
