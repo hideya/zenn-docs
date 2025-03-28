@@ -6,6 +6,22 @@ topics: ["MCP", "AIエージェント", "LLM", "生成AI", "Anthropic" ]
 published: true
 ---
 
+## 【速報】OpenAI が MCP 対応を発表 ＆ 仕様バージョンアップ！
+
+**MCP が実質的な業界標準** になりそうです！
+
+2025年3月27日、**OpenAI が MCP 対応を発表** しました：
+- [@OpenAIDevs "MCP 🤝 OpenAI Agents SDK" ](https://x.com/OpenAIDevs/status/1904957755829481737)
+- [「ChatGPTが“AI界のUSB-C”こと「MCP」対応へ　競合・Anthropic発の規格が実質的な業界標準に」ITmedia](https://www.itmedia.co.jp/aiplus/articles/2503/27/news174.html)
+
+また、3月26日には、**MCP 仕様のバージョンアップの発表** もありました！（特にリモートMCPサーバー関連）：
+- [@alexalbert__ "A new version of the MCP spec was finalized today"](https://x.com/alexalbert__/status/1904908450473324721)
+- [MCP Spec Revision: 2025-03-26](https://spec.modelcontextprotocol.io/specification/2025-03-26/)
+
+この資料の内容は古くなってしまった部分があるので、誤解がないようにまずは速報を。
+時間が取れ次第更新します！
+
+
 ## MCP が盛り上がってるらしい…
 
 Anthropic が [2024年11月に発表](https://www.anthropic.com/news/model-context-protocol)した「[Model Context Protocol（MCP）](https://modelcontextprotocol.io/introduction)」ですが、AI エージェント界隈で結構な盛り上がりを見せています。そこで、その特徴や技術概要、将来の展望について、実際にコーディングした経験も踏まえてまとめてみようと思います。今後の開発の方向性を見るにつけ、MCP が切り開こうとしている世界とその可能性に、とてもワクワクしています。希望的憶測だと、たぶん **「メタ AI エージェント」「自律進化型AIエージェント」** にまでつながります！（後述）
@@ -62,14 +78,13 @@ Please do the following:
 GitHub だけじゃないんです！
 発表されてからそんなに経っていない MCP ですが、既に多数の MCPサーバーが、開発・公開されています。たとえば、Google Drive、Slack、Notion、Spotify、Docker、PostgreSQL などなど… ウェブ検索やブラウザ・オートメーション、DB アクセス、クラウド・サービス利用、SNS 連携 を含め、驚くほど多くの種類があります。以下に MCPサーバーのまとめサイトをご紹介します：
 
+- [MCP公式サイトの MCPサーバー一覧](https://github.com/modelcontextprotocol/servers)
 - [MCP.so - Find Awesome MCP Servers and Clients](https://mcp.so/)
 - [Smithery: MCP Server Registry](https://smithery.ai/)
-- [pulse - Browse and discover MCP use cases, servers, clients, and news](https://www.pulsemcp.com/)
-- [MCP公式サイトの MCPサーバーの例](https://modelcontextprotocol.io/examples)
 
 ![mcp-diagram-plain](/images/mcp-introduction/mcp-server-listing-sites.png =650x)
 
-ご覧のように、すでに 2000 以上もの MCPサーバーが利用できるんです！（誰でも開発・登録できるので、いわゆる「野良 MCPサーバ」も多く含まれているだろうことを考慮する必要はありますが）
+ご覧のように、すでに 2000 以上もの MCPサーバーが利用できるんです！（誰でも開発・登録できるので、いわゆる「野良 MCPサーバー」も多く含まれているだろうことを考慮する必要はありますが）
 これらを組み合わせるとどんなことが実現できるか… 想像するだけでもワクワクしてきませんか…？
 
 
@@ -98,7 +113,7 @@ MCPフレームワークでは、外部機能は（2025年 1月時点での参�
 
 > 実際、[Python Client SDK](https://github.com/modelcontextprotocol/python-sdk/tree/main/src/mcp/client) と [TypeScript Client SDK](https://github.com/modelcontextprotocol/typescript-sdk/tree/main/src/client) の実装をのぞいてみると、HTTPプロトコル用の実装（`sse.py` と `sse.ts`）がすでに存在します。この「sse」は「Server-Sent Events」のことで、コメントによると「メッセージの受信には Server-Sent Events を使用、送信には個別の POST リクエストを使用」とのことです。ただ、[現状の実装はステートフルでサーバーレスなデプロイメントに制限があるのが良くないと議論](https://github.com/modelcontextprotocol/specification/discussions/102)になっており、また認証まわりの標準化が未完成なので（後述）、まだ公には利用を勧めていないのだと思われます。
 
-ちなみに、MCPクライアントをサポートするアプリの一覧は [こちらです](https://github.com/modelcontextprotocol/docs/blob/main/clients.mdx)。数的にもまだまだですが、今後増えていくことを願っています（ちなみに現時点でちゃんと使えることを自分自身で確認したのは「[Claude for Desktop](https://claude.ai/download)」だけです）。
+ちなみに、MCPクライアントをサポートするアプリの一覧は [こちらです](https://github.com/modelcontextprotocol/docs/blob/main/clients.mdx)。
 
 > 脇道：「MCP」の「P」は「Protocol」の「P」。では「MCP Protocol」とは、こはいかに？！ …でも、[本家の資料](https://modelcontextprotocol.io/introduction) もそうなってるんで、エキスパート的にも英語的にも問題はないのでしょう… 
 おっとそういえば！「HTTP Protocol」って自分も平気で言ってる〜 😅

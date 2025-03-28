@@ -12,6 +12,22 @@ published: true
 - MCP や MCP 連携を実現するライブラリの挙動についても理解が深まる
 
 
+## 【速報】OpenAI が MCP 対応を発表 ＆ 仕様バージョンアップ！
+
+**MCP が実質的な業界標準** になりそうです！
+
+2025年3月27日、**OpenAI が MCP 対応を発表** しました：
+- [@OpenAIDevs "MCP 🤝 OpenAI Agents SDK" ](https://x.com/OpenAIDevs/status/1904957755829481737)
+- [「ChatGPTが“AI界のUSB-C”こと「MCP」対応へ　競合・Anthropic発の規格が実質的な業界標準に」（ITmedia）](https://www.itmedia.co.jp/aiplus/articles/2503/27/news174.html)
+
+また、3月26日には、**MCP 仕様のバージョンアップの発表** もありました！（特にリモートMCPサーバー関連）：
+- [@alexalbert__ "A new version of the MCP spec was finalized today"](https://x.com/alexalbert__/status/1904908450473324721)
+- [MCP Spec Revision: 2025-03-26](https://spec.modelcontextprotocol.io/specification/2025-03-26/)
+
+この資料の内容は、今存在する大多数のMCPサーバがサポートするローカル接続についてです。
+リモート接続については時間が取れ次第追記します！
+
+
 ## Quick Start!
 
 これから **「多量に存在する MCPサーバー群の機能を LangChain から簡単利用するためのユーティリティ」** と、それを使った LLM からの外部リソースの呼び出し方法をご紹介していきます！が、関連技術を既にご存知で「手早く実際のコードの雰囲気を見てみたい！」という方に向けて、
@@ -127,7 +143,7 @@ const agent = createReactAgent({
 以上で、たとえば **「bbc.com のニュースヘッドラインを読んで、日本語で要約して」** といったクエリが実行できるようになりました！
 
 #### <!-- &ZeroWidthSpace; >>> -->​<!-- <-- <<< &ZeroWidthSpace; -->
-![mcp-server-listing-sites](/images/langchain-mcp-tools/robot-langchain-tools.png)
+![robot-langchain-tools](/images/langchain-mcp-tools/robot-langchain-tools.png)
 
 
 ## MCP のインパクト
@@ -143,10 +159,9 @@ LangGraph で提供されている **話題の [ReAct Agent](https://sun-asteris
 
 ちなみに **現時点で利用可能な機能群（MCPサーバー）の数は 2000以上**。 ウェブ検索やブラウザ・オートメーション、DB アクセス、クラウド・サービス利用、SNS 連携 を含め、驚くほど多くの種類の外部機能が、誰でも LLM 連携できるように公開されています。ご参考までに以下に MCPサーバーのまとめサイトをご紹介します：
 
+- [MCP公式サイトの MCPサーバー一覧](https://github.com/modelcontextprotocol/servers)
 - [MCP.so - Find Awesome MCP Servers and Clients](https://mcp.so/)
 - [Smithery: MCP Server Registry](https://smithery.ai/)
-- [pulse - Browse and discover MCP use cases, servers, clients, and news](https://www.pulsemcp.com/)
-- [MCP公式サイトの MCPサーバーの例](https://modelcontextprotocol.io/examples)
 
 これら **2000+の機能群（MCP サーバー）を LangChain からガッツリ使えるようにしちゃおう！** というのが、本ユーティリティの目論見です。
 
