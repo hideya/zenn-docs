@@ -159,7 +159,7 @@ LangGraph で提供されている **話題の [ReAct Agent](https://sun-asteris
 
 ちなみに **現時点で利用可能な機能群（MCPサーバー）の数は 2000以上**。 ウェブ検索やブラウザ・オートメーション、DB アクセス、クラウド・サービス利用、SNS 連携 を含め、驚くほど多くの種類の外部機能が、誰でも LLM 連携できるように公開されています。ご参考までに以下に MCPサーバーのまとめサイトをご紹介します：
 
-- [MCP公式サイトの MCPサーバー一覧](https://github.com/modelcontextprotocol/servers)
+- [MCP公式サイトの MCPサーバー一覧](https://github.com/modelcontextprotocol/servers?tab=readme-ov-file#model-context-protocol-servers)
 - [MCP.so - Find Awesome MCP Servers and Clients](https://mcp.so/)
 - [Smithery: MCP Server Registry](https://smithery.ai/)
 

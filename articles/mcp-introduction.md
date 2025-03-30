@@ -78,7 +78,7 @@ Please do the following:
 GitHub だけじゃないんです！
 発表されてからそんなに経っていない MCP ですが、既に多数の MCPサーバーが、開発・公開されています。たとえば、Google Drive、Slack、Notion、Spotify、Docker、PostgreSQL などなど… ウェブ検索やブラウザ・オートメーション、DB アクセス、クラウド・サービス利用、SNS 連携 を含め、驚くほど多くの種類があります。以下に MCPサーバーのまとめサイトをご紹介します：
 
-- [MCP公式サイトの MCPサーバー一覧](https://github.com/modelcontextprotocol/servers)
+- [MCP公式サイトの MCPサーバー一覧](https://github.com/modelcontextprotocol/servers?tab=readme-ov-file#model-context-protocol-servers)
 - [MCP.so - Find Awesome MCP Servers and Clients](https://mcp.so/)
 - [Smithery: MCP Server Registry](https://smithery.ai/)
 
