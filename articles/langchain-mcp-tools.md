@@ -65,17 +65,17 @@ npm i @h1deya/langchain-mcp-tools
 
 ```python:Python
 mcp_servers = {
-    'fetch': {
-        'command': 'uvx',
-        'args': ['mcp-server-fetch']
+    "fetch": {
+        "command": "uvx",
+        "args": ["mcp-server-fetch"]
     }
 }
 ```
 ```ts:TypeScript
 const mcpServers: McpServersConfig = {
   fetch: {
-    command: 'uvx',
-    args: ['mcp-server-fetch']
+    command: "uvx",
+    args: ["mcp-server-fetch"]
   }
 };
 ```
@@ -98,7 +98,7 @@ import {
   convertMcpToLangchainTools,
   McpServersConfig,
   McpServerCleanupFn
-} from '@h1deya/langchain-mcp-tools';
+} from "@h1deya/langchain-mcp-tools";
     ︙
 
 let mcpCleanup: McpServerCleanupFn | undefined;
@@ -119,8 +119,8 @@ from langchain.chat_models import init_chat_model
 from langgraph.prebuilt import create_react_agent
     ︙
 llm = init_chat_model(
-    model='claude-3-7-sonnet-latest',
-    model_provider='anthropic'
+    model="claude-3-7-sonnet-latest",
+    model_provider="anthropic"
 )
 
 agent = create_react_agent(
@@ -129,10 +129,10 @@ agent = create_react_agent(
 )
 ```
 ```ts:TypeScript
-import { ChatAnthropic } from '@langchain/anthropic';
-import { createReactAgent } from '@langchain/langgraph/prebuilt';
+import { ChatAnthropic } from "@langchain/anthropic";
+import { createReactAgent } from "@langchain/langgraph/prebuilt";
     ︙
-const llm = new ChatAnthropic({ model: 'claude-3-7-sonnet-latest' });
+const llm = new ChatAnthropic({ model: "claude-3-7-sonnet-latest" });
 
 const agent = createReactAgent({
   llm,
@@ -260,13 +260,13 @@ from langchain_mcp_tools import convert_mcp_to_langchain_tools
     ︙
 
 mcp_servers = {
-    'fetch': {
-        'command': 'uvx',
-        'args': ['mcp-server-fetch']
+    "fetch": {
+        "command": "uvx",
+        "args": ["mcp-server-fetch"]
     },
-    'filesystem': {
-        'command': 'npx',
-        'args': ['-y', '@modelcontextprotocol/server-filesystem', '.']
+    "filesystem": {
+        "command": "npx",
+        "args": ["-y", "@modelcontextprotocol/server-filesystem", "."]
     }
 }
 
@@ -285,17 +285,17 @@ import {
   convertMcpToLangchainTools,
   McpServersConfig,
   McpServerCleanupFn
-} from '@h1deya/langchain-mcp-tools';
+} from "@h1deya/langchain-mcp-tools";
     ︙
 
 const mcpServers: McpServersConfig = {
   fetch: {
-    command: 'uvx',
-    args: ['mcp-server-fetch']
+    command: "uvx",
+    args: ["mcp-server-fetch"]
   },
   filesystem: {
-    command: 'npx',
-    args: ['-y', '@modelcontextprotocol/server-filesystem', '.']
+    command: "npx",
+    args: ["-y", "@modelcontextprotocol/server-filesystem", "."]
   }
 };
 
@@ -323,8 +323,8 @@ try {
 まず **`fetch`** の場合を見てみます：
 ```ts
   fetch: {
-    command: 'uvx',
-    args: ['mcp-server-fetch']
+    command: "uvx",
+    args: ["mcp-server-fetch"]
   },
 ```
 **`command`** が **`uvx`** 、**`args`** が **`mcp-server-fetch`** となっています。
@@ -339,8 +339,8 @@ try {
 次に **`filesystem`** の部分を見てみましょう：
 ```ts
   filesystem: {
-    command: 'npx',
-    args: ['-y', '@modelcontextprotocol/server-filesystem', '.']
+    command: "npx",
+    args: ["-y", "@modelcontextprotocol/server-filesystem", "."]
   },
 ```
 こちらは **Filesystem MCPサーバー** の起動時に「 **`npx -y @modelcontextprotocol/server-filesystem .`** 」を実行するよう指定しています。
@@ -396,8 +396,8 @@ try {
 ```python:Python
 # from langchain.chat_models import init_chat_model
 llm = init_chat_model(
-    model='claude-3-7-sonnet-latest',
-    model_provider='anthropic'
+    model="claude-3-7-sonnet-latest",
+    model_provider="anthropic"
 )
 
 # from langgraph.prebuilt import create_react_agent
@@ -408,10 +408,10 @@ agent = create_react_agent(
 ```
 
 ```ts:TypeScript
-// import { ChatAnthropic } from '@langchain/anthropic';
-const llm = new ChatAnthropic({ model: 'claude-3-7-sonnet-latest' });
+// import { ChatAnthropic } from "@langchain/anthropic";
+const llm = new ChatAnthropic({ model: "claude-3-7-sonnet-latest" });
 
-// import { createReactAgent } from '@langchain/langgraph/prebuilt';
+// import { createReactAgent } from "@langchain/langgraph/prebuilt";
 const agent = createReactAgent({
   llm,
   tools
@@ -431,15 +431,15 @@ const agent = createReactAgent({
 この`agent`へのクエリーの投げ方は、要点だけをかい摘むと以下のような感じになります：
 
 ```python:Python
-query = 'bbc.com のニュースヘッドラインを読んで、日本語で要約して、bbc-news.txtという名前でカレントディレクトリに保存して'
+query = "bbc.com のニュースヘッドラインを読んで、日本語で要約して、bbc-news.txtという名前でカレントディレクトリに保存して"
 messages = [HumanMessage(content=query)]
-result = await agent.ainvoke({'messages': messages})
+result = await agent.ainvoke({"messages": messages})
 # the last message should be an AIMessage
-response = result['messages'][-1].content
+response = result["messages"][-1].content
 ```
 
 ```ts:TypeScript
-const query = 'bbc.com のニュースヘッドラインを読んで、日本語で要約して、bbc-news.txtという名前でカレントディレクトリに保存して';
+const query = "bbc.com のニュースヘッドラインを読んで、日本語で要約して、bbc-news.txtという名前でカレントディレクトリに保存して";
 const messages =  { messages: [new HumanMessage(query)] }
 const result = await agent.invoke(messages);
 // the last message should be an AIMessage
