@@ -1,7 +1,7 @@
 .PHONY: install preview
 
 install:
-	npm install zenn-cli
+	npm install zenn-cli@latest
 
 preview:
 	npx zenn preview & \
