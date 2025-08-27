@@ -1,6 +1,6 @@
 ---
-title: "なぜ 生成AI は 人間のように言語を扱えるのか？ ⸺ LLM と人の生存戦略との意外な関係"
-emoji: "🤖"
+title: "なぜ 生成AI は 人間のように言語を扱えるのか？ ─ LLM と人の生存戦略との意外な関係"
+emoji: "🧠"
 type: "idea" # tech: 技術記事 / idea: アイデア
 topics: ["LLM", "生成AI", "言語", "脳科学", "認知科学"]
 published: true
@@ -166,9 +166,9 @@ LLM も基本はシンプルです。**与えられた文脈から「次に来�
 - **研究 ①：普遍文法と刺激の貧困仮説**
 Chomsky (1965), [Aspects of the Theory of Syntax](https://shotam.github.io/LING611_papers/Chomsky_1965.pdf), MIT Press
 - **研究 ②：脳を予測機械とする理論（エージェンシーと予測脳）**
-Clark (2013), [Whatever next? Predictive brains, situated agents, and the future of cognitive science](https://philpapers.org/rec/CLAWNP). Behavioral and Brain Sciences
+Clark (2013), [Whatever next? Predictive brains, situated agents, and the future of cognitive science](https://philpapers.org/rec/CLAWNP), Behavioral and Brain Sciences
 - **研究 ③：統一的な脳の理論としての「自由エネルギー原理」**
-Friston (2010), [The free‑energy principle: a unified brain theory?](https://www.nature.com/articles/nrn2787) Nature Reviews Neuroscience
+Friston (2010), [The free‑energy principle: a unified brain theory?](https://www.nature.com/articles/nrn2787), Nature Reviews Neuroscience
 - **研究 ④：認知・模倣・社会的相互作用から言語が生じたとする立場**
 Tomasello (2003), [Constructing a language: A usage-based theory of language acquisition](https://www.jstor.org/stable/j.ctv26070v8), Harvard University Press（書籍の内容を説明しているネット記事：[Innateness and Language / Stanford Encyclopedia of Philosophy](https://plato.stanford.edu/entries/innateness-language/)）
 - **研究 ⑤：圏論を用い、単語列の確率的関係から言語の意味構造を再構成**
