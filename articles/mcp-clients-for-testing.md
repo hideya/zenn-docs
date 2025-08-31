@@ -2,9 +2,11 @@
 title: "「各種 MCP」を「色々な LLM」で試す！ 話題の「gpt-oss」も無料で試せるツールをご紹介"
 emoji: "🤖"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: ["MCP", "LangChain", "LLM", "生成AI", "gpt-oss" ]
+topics: ["MCP", "LangChain", "LLM", "gpt-oss", "生成AI" ]
 published: true
 ---
+
+<!-- ![robot-langchain-tools](/images/mcp-clients-for-testing/title.png) -->
 
 ### 「使いたい MCP サーバー」を「各種 LLM」で簡単に試せる コマンドライン・ツール のご紹介です
 
@@ -136,17 +138,11 @@ pip 版の実行コマンドは **「`mcp-chat`」** です。
 次に APIキー 等を環境変数で指定します。**「`.env`」ファイル** で以下のような感じで指定すると、ツール実行時にそこから読み込みます（以下のうち使うものだけ設定してください）。
 
 ```bash
-# https://console.anthropic.com/settings/keys
 ANTHROPIC_API_KEY=sk-ant-...
-# https://platform.openai.com/api-keys
 OPENAI_API_KEY=sk-proj-...
-# https://aistudio.google.com/apikey
 GOOGLE_API_KEY=AI...
-# https://console.x.ai
 XAI_API_KEY=xai-...
-# https://cloud.cerebras.ai
 CEREBRAS_API_KEY=csk-...
-# https://console.groq.com/keys
 GROQ_API_KEY=gsk_...
 ```
 
@@ -171,18 +167,8 @@ Writing MCP server log file: mcp-server-fetch.log
 [MCP Server Log: "filesystem"] Client does not support MCP Roots, using allowed directories set from server args: [ '/Users/hideya/.../mcp-chat-test' ]
 [info] MCP server "filesystem": 14 tool(s) available:
 [info] - read_file
-[info] - read_text_file
-[info] - read_media_file
-[info] - read_multiple_files
-[info] - write_file
-[info] - edit_file
-[info] - create_directory
-[info] - list_directory
-[info] - list_directory_with_sizes
-[info] - directory_tree
-[info] - move_file
-[info] - search_files
-[info] - get_file_info
+  ︙
+  ︙
 [info] - list_allowed_directories
 [info] MCP servers initialized: 15 tool(s) available in total
 
@@ -199,7 +185,7 @@ Query: █
 ここで、クエリーを書き込むこともできますし、単にリターンを押せば  
 「Exaample Queries」の最初のものが自動的に入力されます。
 
-リターンを押すごとに次々とサンプルクエリーを実行していくので、同じ一連のクエリーで、LLM と MCP の色々な組み合わせでの挙動の違いを、手軽に確認・比較することができます。
+リターンを押すごとに次々とサンプルクエリーを実行していくので、同じ一連のクエリーで、LLM と MCP の色々な組み合わせでの挙動の違いを、手軽に確認・比較することができます。終了するには「`q`」と入力します。
 
 サンプルでは、最初に MCP が絡まないクエリーで基本的な動作を確認し、その後に「filesystem MCP サーバー」によるローカルファイルの読み込みと、「fetch MCP サーバー」によるウェブページの取得を試みています（filesystem MCP サーバーは書き込み等もできちゃうので注意してください）。
 
@@ -212,7 +198,7 @@ Query: █
 - [**Cerebras の gpt-oss の無料枠の説明**](https://inference-docs.cerebras.ai/models/openai-oss)（下の方の「Tier / Free」の部分。頻度や総トークン量の上限の詳細）
 - [**Groq の無料枠の説明ページ**](https://console.groq.com/docs/rate-limits)（同様の上限の説明）
 
-「Cerebras」と「Groq」は Llama といったオープンソース / パラメータ の LLM を提供している企業なのですが、その特色は何とっても、**LLM 専用ハードウェアを用いた「爆走さ！」** にあります（GPU ではないんです。それぞれ [とても興味深い専用システム](https://zenn.dev/jnst/articles/cerebras-is-my-fave) を実装しています）。
+「Cerebras」と「Groq」は Llama といったオープンソース / パラメータ LLM の利用 API を提供している企業なのですが、その特色は何とっても、**LLM 専用ハードウェアを用いた「爆走さ！」** にあります（GPU ではないんです。それぞれ [とても興味深い専用システム](https://zenn.dev/jnst/articles/cerebras-is-my-fave) を実装しています）。
 
 LLM のランキングサイト、Artificial Analysis の [**「LLM API Providers Leadersboard」**](https://artificialanalysis.ai/leaderboards/providers) によると（このサイト超便利です！）、例えば、GPT-5 のトークン出力スピードは「200 tps（トークン / 秒）」ほどなのですが、  
 **Cerebras＋gpt-oss-120B だと「3,000 tps」** を超えます。  
@@ -230,15 +216,17 @@ LLM のランキングサイト、Artificial Analysis の [**「LLM API Provider
 
 実装について少しだけ。ここから先はちょっと話が込み入ってくるので、まずはサクッと試したい方は読み飛ばしても大丈夫です！
 
-このアプリの内部では、MCP サーバーのツールを LangChain のツールに変換して実行しているわけですが、その変換には、諸事情により、LangChain 公式の [MCP Adapters](https://www.npmjs.com/package/@langchain/mcp-adapters) は使っていません。代わりに、**テキスト出力だけを扱う簡易 MCP アダプターを使っています**（[TypeScript 版](https://www.npmjs.com/package/@h1deya/langchain-mcp-tools)、[Python 版](https://pypi.org/project/langchain-mcp-tools/) ともに）。  
+このアプリは LangChain.js を用いて開発した MCP クライアントです。内部では MCP サーバーのツールを LangChain のツールに変換して実行しています。  
+その変換には LangChain 公式の [MCP Adapters](https://www.npmjs.com/package/@langchain/mcp-adapters) は使っておらず、代わりに、**テキスト出力だけを扱う簡易 MCP アダプターを使っています**（[TypeScript 版](https://www.npmjs.com/package/@h1deya/langchain-mcp-tools)、[Python 版](https://pypi.org/project/langchain-mcp-tools/) ともに）。  
 また、ツールの実行には [**LangGraph の ReAct エージェント**](https://langchain-ai.github.io/langgraphjs/reference/functions/langgraph_prebuilt.createReactAgent.html) を使っています（[LangChain 版の ReAct エージェント](https://v03.api.js.langchain.com/functions/langchain.agents.createReactAgent.html)ではないです）。
 
 **このツールで挙動をチェックしても、下回りが異なると 挙動が異なる可能性があります** ので、一筆しました。
 
 ## Google Gemini が通常の LangChain.js＋MCP だとうまく動かない問題について
 
-これは **TypeScript 版 特有の問題** なのですが、Google Gemini（`ChatGoogleGenerativeAI`）と LangChain.js 公式の MCP Adapters との組み合わせで MCP サーバーを呼び出そうとすると、多くの場合、以下のようなエラーメッセージを猛烈な量出した後、**「400 Bad Request」** で失敗します（ちなみに Google Vertex AI なら回避できます）。  Google SDK の TypeScript版 を直接使っても、それだけでは完全回避はできないようです（2025年 8月 現在）。  
-なお、**Python SDK では、この問題は発生しません（内部で対策しています）**。
+これは **TypeScript 版 特有の問題** なのですが、Google Gemini（`ChatGoogleGenerativeAI`）と LangChain.js 公式の MCP Adapters との組み合わせで 、スキーマ定義が複雑な MCP サーバーを呼び出そうとすると、以下のようなエラーメッセージをして **「400 Bad Request」** で失敗する場合があります（ちなみに Google Vertex AI なら回避できます）。なお、Python SDK では、この問題は発生しません。
+
+> Google の新しい Gemini SDK（`@google/genai`）で直接 MCP を使えば問題を回避できるのですが、LangChain.js ではその回避方法が使えず、また LangChain.js の `ChatGoogleGenerativeAI` ではまだ古い SDK（`@google/generative-ai`）を使っており、問題が残っています。
 
 ```
 GoogleGenerativeAIFetchError: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/google-2.5-flash:generateContent: [400 Bad Request] Invalid JSON payload received. Unknown name "type" at 'tools[0].function_declarations[22].parameters.properties[2].value.items.all_of[1].any_of[1].properties[1].value.any_of[0].properties[1].value.any_of[1].all_of[0].properties[1].value': Proto field is not repeating, cannot start list.
@@ -250,11 +238,11 @@ Invalid JSON payload received. Unknown name "type" at 'tools[0].function_declara
 
 このエラーメッセージの主要な部分は **「GoogleGenerativeAIFetchError: … [400 Bad Request] Invalid JSON payload received」** です。
 
-愛用の **MCP サーバー「Notion」「GitHub」「Filesystem」「SQLite」「Playwright」全部こんな調子** で、困りまくりです（2025年 8月 現在）。
+**スキーマ定義が複雑な MCP サーバー、例えば「Notion MCP サーバー」が１つでも MultiServerMCPClient に渡す設定に入っていると、単体では成功する他の MCP サーバーについてでも、ツール呼び出し時にこんな調子で失敗** してしまい、困りまくりです（2025年 8月 現在）。
 
 そこで、**このアプリが使っている MCP アダプターではその対策をしました。** なので「mcp-client-cli」で「gemini-2.5-flash」とかを使っても、上記の MCP サーバーは問題なく動かせます。
 
-> このエラーの原因は、[Gemini のツール呼出し（Function Calling）のスキーマへの要求が、えらく厳しい](https://ai.google.dev/api/caching#Schema) ことです。詳しくは割愛しますが、対策としてやってることは、MCP ツールの定義スキーマを変換して、Gemini が嫌がらない形式にすることです。この機能は、LangChain.js でも Python 版のようにサポートしても良いのではないかと思っていて、今、LangChain レベルでの良い対処方法を検討・仮実装しています。うまくいったら公開します！
+> このエラーの原因は、[Gemini のツール呼出し（Function Calling）のスキーマへの要求が、えらく厳しい](https://ai.google.dev/api/caching#Schema) ことです。詳しくは割愛しますが、対策としてやってることは、MCP ツールの定義スキーマを変換して、Gemini が嫌がらない形式にすることです。この機能は LangChain.js でもサポートしても良いのではないかと思っていて、今、LangChain レベルでの良い対処方法を検討・仮実装しています。うまくいったら公開します！
 
 ちなみに、このエラー回避機能は、設定ファイル「`llm_mcp_config.json5`」に以下のフラグをセットすることで止めることができます。そうすると上記の MCP サーバーを Gemini と共に使うとエラーが出るようになります。対策をしない場合の挙動を確認したい場合は、このようにしてみてください。
 ```json

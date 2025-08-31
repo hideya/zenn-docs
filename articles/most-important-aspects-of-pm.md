@@ -3,7 +3,7 @@ title: "「そのゴール 本当に 大丈夫？」 プロジェクトの成功
 emoji: "🎯"
 type: "idea" # tech: 技術記事 / idea: アイデア
 topics: ["プロジェクト管理", "ゴール設定", "意思決定", "認知バイアス", "リーダーシップ" ]
-published: true
+published: false
 ---
 
 ![robot-langchain-tools](/images/important-aspects-of-pm/project-management.png)
