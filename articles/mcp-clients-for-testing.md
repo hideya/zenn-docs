@@ -238,7 +238,7 @@ Invalid JSON payload received. Unknown name "type" at 'tools[0].function_declara
 
 このエラーメッセージの主要な部分は **「GoogleGenerativeAIFetchError: … [400 Bad Request] Invalid JSON payload received」** です。
 
-**スキーマ定義が複雑な MCP サーバー、例えば「Notion MCP サーバー」が１つでも MultiServerMCPClient に渡す設定に入っていると、単体では成功する他の MCP サーバーについてでも、ツール呼び出し時にこんな調子で失敗** してしまい、困りまくりです（2025年 8月 現在）。
+**スキーマ定義が複雑な MCP サーバーが１つでも MultiServerMCPClient に渡す設定に入っていると、単体では成功する他の MCP サーバーについてでも、ツール呼び出し時にこんな調子で失敗** してしまい、困りまくりです（2025年 8月 現在）。
 
 そこで、**このアプリが使っている MCP アダプターではその対策をしました。** なので「mcp-client-cli」で「gemini-2.5-flash」とかを使っても、上記の MCP サーバーは問題なく動かせます。
 
