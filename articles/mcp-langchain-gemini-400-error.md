@@ -2,7 +2,7 @@
 title: "LangChain.js × Gemini × MCPでハマる「400 Bad Request」をサクッと回避する方法"
 emoji: "🛠️"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: ["MCP", "Gemini", "MCP", "LangChain", "LLM" ]
+topics: ["MCP", "Gemini", "MCP", "LangChain", "LLM"]
 published: false
 ---
 

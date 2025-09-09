@@ -161,7 +161,9 @@ LLM も基本はシンプルです。**与えられた文脈から「次に来�
 
 生成 AI の進化は、人間の知能研究にとっても知性の未来にとっても、新しい扉を開けようとしています。その取っ手に指がかかりつつある ⸺ そんな時代に、今、私たちは立ち会っているのです。
 
-### 各研究の参考文献
+> 続編 書きました！➡︎[**「ChatGPTは、なぜ急に賢くなったのか？ ⸺ 「跳躍」を起こす「ある一線」とは？」**](https://zenn.dev/h1deya/articles/llm-and-emergence) もしよろしければ！
+
+### より詳しく知りたい方へ：各研究の参考文献
 
 - **研究 ①：普遍文法と刺激の貧困仮説**
 Chomsky (1965), [Aspects of the Theory of Syntax](https://shotam.github.io/LING611_papers/Chomsky_1965.pdf), MIT Press
