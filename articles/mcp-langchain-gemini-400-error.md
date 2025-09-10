@@ -3,8 +3,29 @@ title: "LangChain.js × Gemini × MCPでハマる「400 Bad Request」をサク�
 emoji: "🛠️"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["MCP", "Gemini", "MCP", "LangChain", "LLM"]
-published: false
+published: true
 ---
+
+## TL;DR
+
+**もし Gemini + LangChain.js + MCP で 400 エラーが出てお困りの場合、このパッケージで差し替えるだけで解決します！**
+
+まず、このライブラリを入れてみてください 👇
+```bash
+npm i @h1deya/langchain-google-genai-ex
+```
+そしてインポートを差し替えて、クラス名を  **`ChatGoogleGenerativeAIEx`** で置き換えるだけ：
+```diff
+- import { ChatGoogleGenerativeAI } from "@langchain/google-genai"
++ import { ChatGoogleGenerativeAIEx } from "@h1deya/langchain-google-genai-ex"
+
+- const model = new ChatGoogleGenerativeAI({...});
++ const model = new ChatGoogleGenerativeAIEx({...});
+```
+これで込み入ったスキーマの MCP を Gemini が拒否してエラーを返す問題を回避できます 🚀
+
+
+## はじめに
 
 LangChain.js を使って MCP サーバーを動かしつつ、LLM に Google Gemini を選んで試してみたところ……  
 **「400 Bad Request: Invalid JSON payload received」**  
@@ -23,23 +44,6 @@ LangChain.js ユーザーで、MCP 活用中、かつ Gemini のコスパの良�
 
 をご紹介します。  
 同じように「LangChain.js × Gemini × MCP」でハマっている方のお役に立てば嬉しいです 🚀
-
-## TL;DR
-
-**もし Gemini + LangChain.js + MCP で 400 エラーが出てお困りの場合、このパッケージで差し替えるだけで解決します！**
-
-まず、このライブラリを入れてみてください 👇
-```bash
-npm i @h1deya/langchain-google-genai-ex
-```
-そしてインポートを差し替えて：
-```diff
-- import { ChatGoogleGenerativeAI } from "@langchain/google-genai"
-+ import { ChatGoogleGenerativeAIEx } from "@h1deya/langchain-google-genai-ex"
-```
-クラス名を **`ChatGoogleGenerativeAIEx`** に変えるだけ。
-
-これで込み入ったスキーマの MCP を Gemini が拒否してエラーを返す問題を回避できます 🚀
 
 ## よくハマるエラー
 

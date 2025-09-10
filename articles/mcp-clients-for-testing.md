@@ -244,6 +244,8 @@ Invalid JSON payload received. Unknown name "type" at 'tools[0].function_declara
 
 > このエラーの原因は、[Gemini のツール呼出し（Function Calling）のスキーマへの要求が、えらく厳しい](https://ai.google.dev/api/caching#Schema) ことです。詳しくは割愛しますが、対策としてやってることは、MCP ツールの定義スキーマを変換して、Gemini が嫌がらない形式にすることです。この機能は LangChain.js でもサポートしても良いのではないかと思っていて、今、LangChain レベルでの良い対処方法を検討・仮実装しています。うまくいったら公開します！
 
+> **追記：** 👉 公開しました！ [**『LangChain.js × Gemini × MCPでハマる「400 Bad Request」をサクッと回避する方法』**](https://zenn.dev/h1deya/articles/mcp-langchain-gemini-400-error) もしよろしかったらぜひご覧ください！
+
 ちなみに、このエラー回避機能は、設定ファイル「`llm_mcp_config.json5`」に以下のフラグをセットすることで止めることができます。そうすると上記の MCP サーバーを Gemini と共に使うとエラーが出るようになります。対策をしない場合の挙動を確認したい場合は、このようにしてみてください。
 ```json
 {
