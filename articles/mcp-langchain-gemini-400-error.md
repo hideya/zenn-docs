@@ -6,9 +6,11 @@ topics: ["MCP", "Gemini", "MCP", "LangChain", "LLM"]
 published: true
 ---
 
-## TL;DR
+### TL;DR
 
 **もし Gemini + LangChain.js + MCP で 400 エラーが出てお困りの場合、このパッケージで差し替えるだけで解決します！**
+
+> **LangChain 1.2.x** と **Gemini 3 preview** に対応するため、ライブラリ実装とサンプルコードを更新しました！(2026/2/7)
 
 まず、このライブラリを入れてみてください 👇
 ```bash
@@ -22,7 +24,7 @@ npm i @h1deya/langchain-google-genai-ex
 - const model = new ChatGoogleGenerativeAI({...});
 + const model = new ChatGoogleGenerativeAIEx({...});
 ```
-これで込み入ったスキーマの MCP を Gemini が拒否してエラーを返す問題を回避できます 🚀
+これで込み入ったスキーマの MCP を Gemini が拒否してエラーを返す問題を回避できます！
 
 
 ## はじめに
@@ -43,7 +45,7 @@ LangChain.js ユーザーで、MCP 活用中、かつ Gemini のコスパの良�
 - 実際の導入方法とコード例
 
 をご紹介します。  
-同じように「LangChain.js × Gemini × MCP」でハマっている方のお役に立てば嬉しいです 🚀
+同じように「LangChain.js × Gemini × MCP」でハマっている方のお役に立てば嬉しいです！
 
 ## よくハマるエラー
 
@@ -94,8 +96,8 @@ LangChain.js ユーザーで、かつ MCP と Gemini を活用したい私にと
 
 ### 1. 依存パッケージをインストール
 ```
-npm i @langchain/core @langchain/mcp-adapters \
-      @langchain/langgraph @langchain/google-genai \
+npm i langchain @langchain/mcp-adapters \
+      @langchain/google-genai \
       @h1deya/langchain-google-genai-ex
 ```
 ### 2. APIキーを設定
@@ -111,8 +113,7 @@ export GOOGLE_API_KEY=...
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 // import { ChatGoogleGenerativeAIEx } from "@h1deya/langchain-google-genai-ex";
 import { MultiServerMCPClient } from "@langchain/mcp-adapters";
-import { createReactAgent } from "@langchain/langgraph/prebuilt";
-import { HumanMessage } from "@langchain/core/messages";
+import { createAgent, HumanMessage } from "langchain";
 
 const client = new MultiServerMCPClient({
   mcpServers: {
@@ -126,12 +127,12 @@ const client = new MultiServerMCPClient({
 (async () => { // workaround for top-level await
   const mcpTools = await client.getTools();
   
-  const llm = new ChatGoogleGenerativeAI({ model: "gemini-2.5-flash" });
-  // const llm = new ChatGoogleGenerativeAIEx({ model: "gemini-2.5-flash"} );
+  const model = new ChatGoogleGenerativeAI({ model: "gemini-2.5-flash" });
+  // const model = new ChatGoogleGenerativeAIEx({ model: "gemini-2.5-flash"} );
   
-  const agent = createReactAgent({ llm, tools: mcpTools });
+  const agent = createAgent({ model, tools: mcpTools });
   const result = await agent.invoke({
-    messages: [new HumanMessage("Read https://en.wikipedia.org/wiki/LangChain and summarize")]
+    messages: [new HumanMessage("Fetch the raw HTML content from bbc.com and tell me the titile")]
   });
   
   console.log(result.messages[result.messages.length - 1].content);
@@ -142,15 +143,16 @@ const client = new MultiServerMCPClient({
 これを実行すると、例の 400 Bad Request が返ってきます。
 
 ```
-GoogleGenerativeAIFetchError: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent: 
-[400 Bad Request] Invalid JSON payload received. Unknown name "exclusiveMaximum" at 'tools[0].function_declarations[0].parameters.properties[1].value': Cannot find field.
-Invalid JSON payload received. Unknown name "exclusiveMinimum" at 'tools[0].function_declarations[0].parameters.properties[1].value': Cannot find field. [{"@type":"type.googleapis.com/google.rpc.BadRequest","fieldViolations":[{"field":"tools[0].function_declarations[0].parameters.properties[1].value","description":"Invalid JSON payload received. Unknown name \"exclusiveMaximum\" at 'tools[0].function_declarations[0].parameters.properties[1].value': Cannot find field."},{"field":"tools[0].function_declarations[0].parameters.properties[1].value","description":"Invalid JSON payload received. Unknown name \"exclusiveMinimum\" at 'tools[0].function_declarations[0].parameters.properties[1].value': Cannot find field."}]}]
-    at handleResponseNotOk (file:///.../node_modules/@google/generative-ai/dist/index.mjs:432:11)
+GoogleGenerativeAIFetchError: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent: [400 Bad Request] Invalid JSON payload received. Unknown name "exclusiveMaximum" at 'tools[0].function_declarations[0].parameters.properties[1].value': Cannot find field.
+Invalid JSON payload received. Unknown name "exclusiveMinimum" at ...
+    ...
+    at handleResponseNotOk (.../node_modules/@google/generative-ai/dist/index.js:434:11)
     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at async makeRequest (file:///.../node_modules/@google/generative-ai/dist/index.mjs:401:9)
-    at async generateContent (file:///.../node_modules/@google/generative-ai/dist/index.mjs:865:22)
-    at async file:///.../node_modules/@langchain/google-genai/dist/chat_models.js:737:24
-    at async RetryOperation._fn (/.../node_modules/p-retry/index.js:50:12) {
+    at async makeRequest (.../node_modules/@google/generative-ai/dist/index.js:403:9)
+    at async generateContent (.../node_modules/@google/generative-ai/dist/index.js:867:22)
+    at async <anonymous> (.../node_modules/@langchain/google-genai/src/chat_models.ts:1011:18)
+    at async Object.pRetry (.../node_modules/@langchain/core/src/utils/p-retry/index.js:236:22)
+    at async run (.../node_modules/p-queue/dist/index.js:163:29) {
   status: 400,
   statusText: 'Bad Request',
   errorDetails: [
@@ -163,17 +165,15 @@ Invalid JSON payload received. Unknown name "exclusiveMinimum" at 'tools[0].func
 import { ChatGoogleGenerativeAIEx } from "@h1deya/langchain-google-genai-ex";
     ︙
     ︙
-  // const llm = new ChatGoogleGenerativeAI({ model: "gemini-2.5-flash" });
-  const llm = new ChatGoogleGenerativeAIEx({ model: "gemini-2.5-flash"} );
+  // const model = new ChatGoogleGenerativeAI({ model: "gemini-2.5-flash" });
+  const model = new ChatGoogleGenerativeAIEx({ model: "gemini-2.5-flash"} );
     ︙
 ```
 
-これで エラーが消え、ちゃんと応答が返ってくる ようになります 🚀
+これで エラーが消え、ちゃんと応答が返ってくる ようになります！
 ```
-LangChain is an open-source software framework launched in October 2022 
-by Harrison Chase. It facilitates the integration of large language models 
-(LLMs) into applications, with use cases including document analysis, 
-summarization, chatbots, and code analysis.
+The title of the BBC page is: "BBC Home - Breaking News, World News, US News,
+Sports, Business, Innovation, Climate, Culture, Travel, Video &amp; Audio
 ...
 ```
 
