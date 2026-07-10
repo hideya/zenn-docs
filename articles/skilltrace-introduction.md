@@ -8,6 +8,10 @@ published: false
 
 # SkillTrace とは？
 
+[SkillTrace](https://www.npmjs.com/package/skilltrace) は AI agent による skill の利用状況を把握するための無料の observability tool です。
+
+![SkillTrace ダイアグラム](/images/skilltrace-introduction/skilltrace-diagram.webp =500x)
+
 最近、AI coding agent が、再利用可能な “skills” を活用するようになってきました。
 
 ここでいう skill とは、特定の種類の作業を行うための小さな手順パッケージのようなものです。たとえば、
@@ -20,7 +24,7 @@ published: false
 といった作業について、agent に「この作業ではこう進めてください」と伝えるための instructions や references、場合によっては scripts をまとめたものです。
 
 これはかなり強力です。
-一方で、新しい debugging 問題も生まれます。
+一方で、そのデバグに関して、新たな問題も認識され始めています。
 
 > agent が複数の skills から選べるとき、どの skill を実際にどう使ったのか、どうやって知ればよいのか？
 
