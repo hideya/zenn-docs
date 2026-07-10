@@ -8,7 +8,7 @@ published: false
 
 # SkillTrace とは？
 
-[SkillTrace](https://www.npmjs.com/package/skilltrace) は AI agent による skill の利用状況を把握するための無料の observability tool です。
+[SkillTrace](https://www.npmjs.com/package/skilltrace) は AI agent による skill の利用状況を把握するための、無料の observability tool です。
 
 ![SkillTrace ダイアグラム](/images/skilltrace-introduction/skilltrace-diagram.webp =500x)
 
