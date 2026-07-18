@@ -244,9 +244,11 @@ skilltrace mcp install
 skilltrace diagnostics
 
 skilltrace start --note "demo type-fix run"
+
 codex "Fix the TypeScript error using the available skill"
 # claude "Fix the TypeScript error using the available skill"
 # gemini "Fix the TypeScript error using the available skill"
+
 skilltrace stop
 ```
 
