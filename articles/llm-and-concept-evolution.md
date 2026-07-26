@@ -166,5 +166,5 @@ AI の未来の知性もまた、
 
 ⸺
 **ご参考：** 本記事の続編的な議論を書きました！
-[『人類の知識蓄積の単位は「文章」から「実行可能な作業単位」へ移行するのではないか？』](https://zenn.dev/h1deya/articles/future-of-human-knowledge-accumulation)
+[**『人類の知識蓄積の単位は「文章」から「実行可能な作業単位」へ移行するのではないか？』**](https://zenn.dev/h1deya/articles/future-of-human-knowledge-accumulation)
 もしよろしければ、こちらも覗いてみてやってください！
