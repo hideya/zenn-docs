@@ -11,6 +11,10 @@ published: true
 **[SkillTrace](https://www.npmjs.com/package/skilltrace) は AI agent による skill の利用状況を把握するための、無料の observability tool です。** 以下ではその使い方をサンプルを使って具体的に説明します。
 
 ![SkillTrace ダイアグラム](/images/skilltrace-introduction/skilltrace-diagram.webp =500x)
+*SkillTrace の 構成図*
+
+![SkillTrace の Timeline](/images/skilltrace-introduction/skilltrace-timeline.webp =500x)
+*SkillTrace の Timeline 表示例*
 
 # なぜ Skill のデバグは難しいのか？
 
@@ -70,7 +74,7 @@ SkillTrace は、スキルを使った処理（run）において、次の4つ�
 この記事では、まず小さな toy demo を動かし、その後、自分の repository に適用する流れを紹介します。
 
 [![SkillTrace 実行の様子](/images/skilltrace-introduction/skilltrace-video-cover.webp =400x)
-*SkillTrace による  toy demo 実行の様子*](https://github.com/user-attachments/assets/5f315791-d207-4255-b524-f2265a61c1cb)
+*SkillTrace によるデモ実行の様子*](https://github.com/user-attachments/assets/ddcdebc4-9050-4614-b9ac-14f484620a99)
 
 # SkillTrace が記録するもの
 
@@ -249,13 +253,10 @@ skilltrace daemon start
 skilltrace mcp install
 skilltrace diagnostics
 
-skilltrace start --note "demo type-fix run"
-
-codex "Fix the TypeScript error using the available skill"
-# claude "Fix the TypeScript error using the available skill"
-# gemini "Fix the TypeScript error using the available skill"
-
-skilltrace stop
+skilltrace run --note "demo type-fix run" -- \
+  codex "Fix the TypeScript error using the available skill"
+# skilltrace run -- claude "Fix the TypeScript error using the available skill"
+# skilltrace run -- gemini "Fix the TypeScript error using the available skill"
 ```
 
 実行中、AI エージェントが「skilltrace MCP server tool の呼び出しを許可（allow）するか？」といったことを聞いてきたら、「Allow」を選択してください。
@@ -337,9 +338,9 @@ agent に skill usage を明示的に考えさせ、MCP tool calls で報告さ�
 そのため、SkillTrace には3つの trace modes があります。
 
 ```bash
-skilltrace start --mode full
-skilltrace start --mode passive_reflection
-skilltrace start --mode passive_only
+skilltrace run --mode full -- <agent> ...
+skilltrace run --mode passive_reflection -- <agent> ...
+skilltrace run --mode passive_only -- <agent> ...
 ```
 
 ### full
@@ -396,13 +397,20 @@ Toy demo がうまく成功したら、自分の repository でも同じ workflo
 
 ```bash
 cd <repo>
-skilltrace start
+skilltrace run -- codex "fix the TypeScript errors in this repo"
+```
+
+同様に、他のコマンドラインエージェントでも動作します。
+
+```bash
+skilltrace run -- claude "review this change"
+skilltrace run -- gemini "update the tests"
 ```
 
 run list に目的を表示したい場合は run に対して note を付けることができます。
 
 ```bash
-skilltrace start --note "trying to simplify AGENTS.md"
+skilltrace run --note "trying to simplify AGENTS.md" -- codex "..."
 ```
 
 その後、agent task を通常通り実行します。
@@ -461,13 +469,13 @@ CLAUDE.md
 通常、skilltrace start は supported profile を自動検出します。repo に複数の instruction surface がある場合や、明示的に指定したい場合は、次のようにします。
 
 ```bash
-skilltrace start --instruction-profile agents
+skilltrace run --instruction-profile agents -- <agent> ...
 ```
 
 または、
 
 ```bash
-skilltrace start --instruction-profile claude-code
+skilltrace run --instruction-profile claude-code -- claude ...
 ```
 
 skilltrace start は、選択された instruction file に一時的な tracing-policy instruction を挿入し、.skilltrace/instrumentation.mdを書き、必要に応じて .skilltrace.json を作成します。
@@ -505,7 +513,7 @@ SkillTrace の基本的な考え方は明快で、それは「1つの signal に
 
 内部的には、ざっくり次のような構成です。
 
-![SkillTrace ダイアグラム](/images/skilltrace-introduction/skilltrace-diagram.webp =500x)
+![SkillTrace の構成図](/images/skilltrace-introduction/skilltrace-diagram.webp =500x)
 
 ### Local daemon
 
