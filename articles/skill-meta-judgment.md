@@ -6,11 +6,9 @@ topics: ["Skill", "AIエージェント", "AI", "生成AI", "LLM"]
 published: false
 ---
 
-# AIエージェントに必要なのは「良い Skill」だけなのだろうか ― Skill、Experience、そして「いま自分の判断を信じてよいのか」を判断する能力について
+# AIエージェントに必要なのは「良い Skill」だけなのだろうか ― Skill、Experience、そして「今の自分の判断を信じてよいのか」を判断する能力について
 
 本稿では、AIエージェントの Skill の有用性をより推し進めるために、熟練者の実務判断と暗黙知の扱いに着目しつつ、Skill が LLM の思考を固定してしまう可能性と、それを回避するために必要と思われる追加の枠組みについて論じていきます。
-
-実務知を手順へ圧縮して Agent へ渡せるようになってきている昨今、その圧縮によって失われる経験的知性をどう扱うのか。さらに、その経験を使って、自分が現在適用している知識の Frame そのものを疑える Agent をどう作るのか。これらの観点は、今後の AI Agent の活用にあたって、必須の視点と考えています。
 
 ---
 
@@ -34,6 +32,8 @@ AIエージェントにおける **Skill** が注目されています。
 
 これは **実行可能な作業単位** の外部化と考えることができます。
 つまり、ある意味では、ソフトウェアが「計算手順を実行可能な知識にした」という「革新」の次のレベルとして、Skill は、自然言語での記述力を活用し、幅広い人々が関与できるかたちで、人間の判断や作業手順を含む、より広い実務知識を、人以外でも実行可能な形へ変え始めているのかもしれません。
+
+より詳細には、現在の Agent Skills の仕様を参照すると、Skill はまず `name` と `description` によって発見・選択され、必要と判断された時点で `SKILL.md` 本文が読み込まれ、さらに必要に応じて `references` や `scripts` が参照される Progressive Disclosure の構造をとります。つまり Skill は、「何をするか」だけでなく、「いつ自分が relevant なのか」を自然言語で Agent に伝える仕組みでもあります（[Agent Skills Specification](https://agentskills.io/specification)）。
 
 私はこの可能性に強く惹かれています。
 
@@ -121,6 +121,10 @@ Skill でも同じことができるでしょう。
 むしろ過去の多数の経験が混ざり合い、判断そのものの傾向を変えている。
 
 これは明文化された if-then ルールというより、**多数の経験によって形成された分散的なパターン認識** に近いのかもしれません。
+
+このような熟練者の判断は、認知科学でも長く研究されてきました。Gary Klein らが熟練した消防指揮官の意思決定を調べた研究では、複数の選択肢を並べて比較する場面は少なく、むしろ過去の経験から状況を「見覚えのあるパターン」として認識し、適切と思われる行動を直接想起する判断が多く観察されました。これは **Recognition-Primed Decision（RPD）** として整理されています（[Klein, Calderwood & Clinton-Cirocco, 1986](https://doi.org/10.1177/154193128603000616)）。
+
+ただし、経験が多ければ直感が自動的に正しくなるわけではありません。Daniel Kahneman と Gary Klein は、熟練した直感が信頼に値するものとなるためには、環境に学習可能な規則性があり、その規則性について十分な経験とフィードバックを得られることが重要だと整理しています（[Kahneman & Klein, 2009](https://doi.org/10.1037/a0016755)）。つまり Experience を蓄積するだけでなく、**その経験と結果の対応を観測し、学べること** が必要になります。
 
 # Procedural Knowledge と Episodic Knowledge
 
@@ -252,6 +256,10 @@ Skill は Agent に、
 
 熟練者でさえ、最初に「これはあのタイプの問題だ」と認識すると、その Frame に関連した特徴に注意が集中し、別の可能性を見落とすことがあります。
 
+この点について、Merim Bilalić らがチェスの熟練者を対象に行った研究は示唆的です。馴染みのある解が最初に思い浮かぶと、より良い解が存在してもそれを発見しにくくなりました。さらに Eye Tracking を用いた実験では、参加者自身は「より良い別解を探している」と報告しているにもかかわらず、視線は最初に活性化された解に関係する盤面の特徴へ留まり続ける傾向が観測されました。つまり既存の Frame は、答えだけでなく **「何を見るか」という Attention そのもの** に影響していたことになります（[Bilalić, McLeod & Gobet, 2008](https://doi.org/10.1016/j.cognition.2008.05.005)）。
+
+もちろん、これは人間についての研究であり、Skill を持つ LLM Agent で同じ現象が起きることを直接示したものではありません。しかし、「先に与えられた Frame が、その後に何を見るかを変える」という点は、本稿の問題意識とよく重なります。
+
 Skill を持った Agent でも、似たことが起きる可能性があります。
 
 たとえば、
@@ -291,6 +299,8 @@ Skill A と整合する証拠がさらに目につく
 可能性は考えておく必要があります。
 
 Skill が詳細に厳密によくできているほど、より危険になる場合すらあるかもしれません。
+
+この可能性を Agent Skills 側から考えるうえで興味深い研究も現れています。2026年の *Under the Hood of SKILL.md* では、`SKILL.md` の自然言語的な Metadata や Description の Framing によって、機能的には同等な Skill のどちらを Agent が選ぶかが偏りうることが報告されました（[Saha, Faghih & Feizi, 2026](https://arxiv.org/abs/2605.11418)）。この研究が、本稿でいう「Skill を読み込んだ後の Frame Fixation」まで実証したわけではありません。しかし少なくとも、**SKILL.md は受動的な説明文ではなく、Agent が何を見つけ、選び、使うかに影響する Operational Text である** ことを示す結果だと言えます。
 
 # 現在の状況を Skill の Frame に押し込めていないか？
 
@@ -345,8 +355,6 @@ Meta-Judgment は、
 > **A、B、C のいずれかで処理できると思っていること自体が間違っていないか**
 
 を問います。
-
----
 
 # Execution-Oriented から Risk-Sensitive へ
 
@@ -441,6 +449,10 @@ Meta-Judgment は、
 
 という軸が重要になる可能性があります。
 
+こうした考え方には、人間の組織側にも長い蓄積があります。High Reliability Organization（HRO）の研究では、重大事故だけでなく Incident や Near Miss をシステムの状態を示す Signal として扱い、**Preoccupation with Failure（失敗への継続的な警戒）** や **Reluctance to Simplify（安易に単純化しない姿勢）** が重視されてきました。英国の石油精製施設を対象とした事例研究でも、Incident や Near Miss の収集・分析が Reliability を高める実践の一部として報告されています（[Lekka & Sugden, 2011](https://doi.org/10.1016/j.psep.2011.07.003)）。
+
+「成功したから問題なし」で終わらせるのではなく、**成功したにもかかわらず、なぜ危なかったのか** を学習材料にする。この発想は、熟練した Agent の Experience を考えるうえでも重要だと思います。
+
 # 失敗をルール化すれば安全になる、とは限らない
 
 ここでもう一つ注意したいことがあります。
@@ -475,6 +487,8 @@ Safer Agent
 
 過去の失敗から学んだはずなのに、その学び方が Procedural になりすぎることで、かえって未知の状況へ弱くなる。
 
+実際、448組織を対象に Near Miss からの学習を調べた研究では、Near Miss の経験は組織の **Procedural Response を強める一方で、Flexible Response への重点を弱める** 傾向と関連していました（[Azadegan et al., 2019](https://doi.org/10.1016/j.ijpe.2019.04.021)）。もちろん、組織と LLM Agent をそのまま同一視することはできません。しかし「失敗から学ぶこと」と「ルールを増やすこと」は同義ではなく、学び方によっては柔軟性を失う可能性がある、という点は示唆的です。
+
 これは、人間の組織でも知られている問題に似ています。
 
 - 事故が起きる
@@ -488,7 +502,7 @@ Safer Agent
 
 を疑うことだった、ということがあります。
 
-組織学習の研究でいう **Single-loop Learning** と **Double-loop Learning** の違いにも近いでしょう。
+組織学習の研究でいう **Single-loop Learning** と **Double-loop Learning** の違いにも近いでしょう。Chris Argyris は、与えられた目的や前提の中で誤りを修正するだけでなく、その判断を生み出した Policy や Objective 自体を問い直す学習を Double-loop Learning として区別しました（[Argyris, 1977](https://hbr.org/1977/09/double-loop-learning-in-organizations)）。
 
 失敗した行動を修正するのが Single-loop。
 
@@ -518,7 +532,9 @@ AI に経験を学ばせようとすると、私たちはすぐに、
 
 何らかの圧縮や検索は必要になります。
 
-しかし、あらゆる Experience をすぐルールへ変換してしまうと、まさに今守りたいものを失う可能性があります。
+一方で、Memory を構造化・圧縮する過程そのものが文脈を壊す可能性を問題にする研究も現れています。2026年に発表された E-mem という Memory システムでは、複雑な Episode を Embedding や Graph などの事前定義構造へ圧縮すると、長い時間軸にまたがる Contextual Dependency が損なわれうることを **Destructive De-contextualization** として問題化し、Episodic Context を再構成する方向を提案しています（[Wang et al., 2026](https://arxiv.org/abs/2601.21714)）。
+
+つまり、あらゆる Experience をすぐルールへ変換してしまうと、まさに今守りたいものを失う可能性があるということです。
 
 たとえば、
 
@@ -552,6 +568,8 @@ AI に経験を学ばせようとすると、私たちはすぐに、
 そうしたものを、無理に整理・分類せずに残す。
 
 これもまた、Skill の世界に必要な知識形式だと思います。
+
+なお、本稿でいう Unresolved Experience は 上述の E-mem での方向性と直接的な関係はありません。しかし、「Memory を整理すればするほど良い」とは限らず、**Episode が持つ文脈をどこまで残すべきか** が独立した設計問題になる、という点では強く関連しています。
 
 # Skill / Experience / Meta-Judgment
 
@@ -607,7 +625,11 @@ Agent Memory の研究は、２つ目の Experience Layer へ取り組み始め�
 
 すでに LLM Agent 研究では、過去の Trial、Reflection、Trajectory、成功・失敗事例などを Context として与えることで、次の実行へ利用し、性能を改善する研究が多数行われています。
 
-しかし、この能力を「正解率を上げるため」だけではなく、
+代表例のひとつである **Reflexion** は、モデルの Weight を更新する代わりに、Task の Feedback を自然言語で Reflection し、そのテキストを Episodic Memory Buffer に保存して次の Trial に利用します（[Shinn et al., 2023](https://papers.neurips.cc/paper_files/paper/2023/hash/1b44b878bb782e6954cd888628510e90-Abstract-Conference.html)）。また **ExpeL** は、Agent が複数の Task から Experience を蓄積し、そこから抽出した Insight と過去の Experience 自体を、推論時に想起して判断へ利用する枠組みを提案しています（[Zhao et al., 2023](https://arxiv.org/abs/2308.10144)）。
+
+これらの研究は、「Weight を再学習しなくても、過去の Experience を利用して Agent の性能を改善できる」ことを示しています。しかし本稿で特に関心があるのは、そこからさらに少し違う問いです。**Experience によって正しい答えを増やすだけでなく、Agent の「疑い方」そのものを変えられるのか、という点です。**
+
+つまり、この能力を「正解率を上げるため」だけではなく、
 
 > **Agent の判断姿勢そのものを変えるため**
 
@@ -666,6 +688,10 @@ Agent の推論姿勢が、
 - Skillの適用そのものを中止できたか
 
 といったものを測る必要があります。
+
+この問題に近い研究は、すでに始まりつつあります。2026年の **Agentic Abstention** は、Agent が単発で「答える／拒否する」を選ぶ問題ではなく、環境との相互作用の途中で **Answer / Act / Abstain** を逐次判断し、「いつ行動を止めるべきか」を扱っています。13種類の LLM-as-Agent システムを 28,000 件以上の Task で評価した結果、止まるべきなのに止まれないケースだけでなく、止まる判断が遅すぎるケースも観測されています（[Luo, Wen & Wang, 2026](https://arxiv.org/abs/2606.28733)）。
+
+これは本稿の問題意識と非常に近い一方で、Meta-Judgment は単なる停止判断より少し広いものとして考えています。つまり、「行動を続けるべきか」だけでなく、**そもそも現在の Problem Frame や Skill の適用そのものを信頼してよいか** を問う層です。
 
 つまり、
 
@@ -733,8 +759,6 @@ Episodic Experience
 
 という多層的なモデルで Agent を考えた方がよいのかもしれません。
 
----
-
 # 人類は「手順」を AI に伝える手段を手に入れた。では「経験」はどうか？
 
 考えてみると、人類は知識を共有するとき、長いあいだ経験を圧縮してきました。
@@ -798,3 +822,23 @@ Skill を書くことだけが、Agent に知識を与える方法ではない�
 まだこれは仮説です。
 しかし、十分に実験する価値のある仮説ではないかと思います。
 あなたはどう思いますか？
+
+---
+
+# 関連研究・参考文献
+
+本稿の問題意識に特に関連する研究・仕様を以下に挙げます。
+
+1. Agent Skills. [*Specification*](https://agentskills.io/specification).
+2. Klein, G. A., Calderwood, R., & Clinton-Cirocco, A. (1986). [*Rapid Decision Making on the Fire Ground*](https://doi.org/10.1177/154193128603000616). Proceedings of the Human Factors Society Annual Meeting, 30(6), 576–580.
+3. Kahneman, D., & Klein, G. (2009). [*Conditions for Intuitive Expertise: A Failure to Disagree*](https://doi.org/10.1037/a0016755). American Psychologist, 64(6), 515–526.
+4. Bilalić, M., McLeod, P., & Gobet, F. (2008). [*Why Good Thoughts Block Better Ones: The Mechanism of the Pernicious Einstellung (Set) Effect*](https://doi.org/10.1016/j.cognition.2008.05.005). Cognition, 108(3), 652–661.
+5. Saha, S., Faghih, K., & Feizi, S. (2026). [*Under the Hood of SKILL.md: Semantic Supply-chain Attacks on AI Agent Skill Registry*](https://arxiv.org/abs/2605.11418). arXiv:2605.11418.
+6. Lekka, C., & Sugden, C. (2011). [*The Successes and Challenges of Implementing High Reliability Principles: A Case Study of a UK Oil Refinery*](https://doi.org/10.1016/j.psep.2011.07.003). Process Safety and Environmental Protection, 89(6), 443–451.
+7. Azadegan, A., Srinivasan, R., Blome, C., & Tajeddini, K. (2019). [*Learning from Near-miss Events: An Organizational Learning Perspective on Supply Chain Disruption Response*](https://doi.org/10.1016/j.ijpe.2019.04.021). International Journal of Production Economics, 216, 215–226.
+8. Argyris, C. (1977). [*Double Loop Learning in Organizations*](https://hbr.org/1977/09/double-loop-learning-in-organizations). Harvard Business Review.
+9. Wang, K., Lin, Y., Lou, J., Zhou, Z., Suvonov, B., & Li, J. (2026). [*E-mem: Multi-agent based Episodic Context Reconstruction for LLM Agent Memory*](https://arxiv.org/abs/2601.21714). arXiv:2601.21714.
+10. Shinn, N., Cassano, F., Berman, E., Gopinath, A., Narasimhan, K., & Yao, S. (2023). [*Reflexion: Language Agents with Verbal Reinforcement Learning*](https://papers.neurips.cc/paper_files/paper/2023/hash/1b44b878bb782e6954cd888628510e90-Abstract-Conference.html). NeurIPS 2023.
+11. Zhao, A., Huang, D., Xu, Q., Lin, M., Liu, Y.-J., & Huang, G. (2023). [*ExpeL: LLM Agents Are Experiential Learners*](https://arxiv.org/abs/2308.10144). arXiv:2308.10144.
+12. Luo, H., Wen, B., & Wang, L. L. (2026). [*Agentic Abstention: Do Agents Know When to Stop Instead of Act?*](https://arxiv.org/abs/2606.28733). arXiv:2606.28733.
+
