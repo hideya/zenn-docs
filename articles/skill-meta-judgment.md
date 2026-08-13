@@ -1,9 +1,9 @@
 ---
-title: "Skill は AI エージェントを賢くするのか？ それとも思考を固定するのか？"
+title: "Skill は AI エージェントを賢くするのか？ それとも思考を固定するのか？ ― 判断自体を判断する能力の必要性とは？"
 emoji: "🤔"
 type: "idea" # tech: 技術記事 / idea: アイデア
 topics: ["Skill", "AIエージェント", "AI", "生成AI", "LLM"]
-published: false
+published: true
 ---
 
 # AIエージェントに必要なのは「良い Skill」だけなのだろうか ― Skill、Experience、そして「今の自分の判断を信じてよいのか」を判断する能力について ―
@@ -350,7 +350,7 @@ Skill が詳細に厳密によくできているほど、より危険になる�
 
 Skill Selection が、
 
-> A、B、Cのどの Skill が最も適切か
+> A、B、C のどの Skill が最も適切か
 
 を問うのに対して、
 
