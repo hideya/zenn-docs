@@ -212,7 +212,7 @@ Skill が非常に得意なのは、
 - 決定を遅らせる
 - あるいは、いったん Skill の適用そのものを止める
 
-つまり Experience（体験）は、
+つまり Experience は、
 
 `Experience ▶︎ Answer`
 
@@ -604,7 +604,7 @@ Agent Memory の研究は、２つ目の Experience Layer へ取り組み始め�
 
 ここで LLM には、従来のソフトウェアにはなかった興味深い特性があることについて言及してみましょう。
 
-それは、**In-context learning** ができることです。
+それは、**In-context learning（文脈内学習）** ができることです。
 
 これは、追加学習でモデルのパラメーターを更新しなくても、例、過去の経験、追加情報などを Context として与えることで、その Context に応じて振る舞いを変化させることができるという LLM の特徴のことです。
 
@@ -612,9 +612,9 @@ Agent Memory の研究は、２つ目の Experience Layer へ取り組み始め�
 
 代表例のひとつである **Reflexion** は、モデルの Weight を更新する代わりに、Task の Feedback を自然言語で Reflection し、そのテキストを Episodic Memory Buffer に保存して次の Trial に利用します（[Shinn et al., 2023](https://papers.neurips.cc/paper_files/paper/2023/hash/1b44b878bb782e6954cd888628510e90-Abstract-Conference.html)）。また **ExpeL** は、Agent が複数の Task から Experience を蓄積し、そこから抽出した Insight と過去の Experience 自体を、推論時に想起して判断へ利用する枠組みを提案しています（[Zhao et al., 2023](https://arxiv.org/abs/2308.10144)）。
 
-これらの研究は、「Weight を再学習しなくても、過去の Experience を利用して Agent の性能を改善できる」ことを示しています。しかし本稿で特に関心があるのは、そこからさらに踏み込んだ、少々違う問いです。**Experience によって正しい答えを増やすだけでなく、Agent の「疑い方」そのものを変えられるのか、というポイントです。**
+これらの研究は、「Weight を再学習しなくても、過去の Experience を利用して Agent の性能を改善できる」ことを示しています。しかし本稿で特に関心があるのは、そこからさらに踏み込んだ、少々違う問いです。**Experience によって正答率を上げるだけでなく、Agent の「疑い方」そのものを変えられるのか、というポイントです。**
 
-つまり、この能力を「正解率を上げるため」だけではなく、
+つまり、この能力を、
 
 > **Agent の判断姿勢そのものを変えるため**
 
