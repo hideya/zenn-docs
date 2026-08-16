@@ -124,9 +124,11 @@ Skill でも同じことができるでしょう。
 
 これは明文化された if-then ルールというより、**多数の経験によって形成された分散的なパターン認識** に近いのかもしれません。
 
-このような熟練者の判断は、認知科学でも長く研究されてきました。Gary Klein らが熟練した消防指揮官の意思決定を調べた研究では、複数の選択肢を並べて比較する場面は少なく、むしろ過去の経験から状況を「見覚えのあるパターン」として認識し、適切と思われる行動を直接想起する判断が多く観察されました。これは **Recognition-Primed Decision（RPD）** として整理されています（[Klein, Calderwood & Clinton-Cirocco, 1986](https://doi.org/10.1177/154193128603000616)）。
+このような熟練者の判断は、認知科学でも長く研究されてきました。  
+Gary Klein らが熟練した消防指揮官の意思決定を調べた研究では、複数の選択肢を並べて比較する場面は少なく、むしろ過去の経験から状況を「見覚えのあるパターン」として認識し、適切と思われる行動を直接想起する判断が多く観察されました。これは **Recognition-Primed Decision（RPD）** として整理されています（[Klein, Calderwood & Clinton-Cirocco, 1986](https://doi.org/10.1177/154193128603000616)）。
 
-ただし、経験が多ければ直感が自動的に正しくなるわけではありません。Daniel Kahneman と Gary Klein は、熟練した直感が信頼に値するものとなるためには、環境に学習可能な規則性があり、その規則性について十分な経験とフィードバックを得られることが重要だと整理しています（[Kahneman & Klein, 2009](https://doi.org/10.1037/a0016755)）。つまり Experience を蓄積するだけでなく、**その経験と結果の対応を観測し、学べること** が必要になります。
+ただし、経験が多ければ直感が自動的に正しくなるわけではありません。  
+Daniel Kahneman と Gary Klein は、熟練した直感が信頼に値するものとなるためには、環境に学習可能な規則性があり、その規則性について十分な経験とフィードバックを得られることが重要だと整理しています（[Kahneman & Klein, 2009](https://doi.org/10.1037/a0016755)）。つまり Experience を蓄積するだけでなく、**その経験と結果の対応を観測し、学べること** が必要になります。
 
 # Procedural Knowledge と Episodic Knowledge
 
@@ -304,7 +306,9 @@ Skill A と整合する証拠がさらに目につく
 
 Skill が詳細に厳密によくできているほど、より危険になる場合すらあるかもしれません。
 
-この可能性を Agent Skills 側から考えるうえで興味深い研究も現れています。2026年の *Under the Hood of SKILL.md* では、`SKILL.md` の自然言語的な Metadata や Description の Framing によって、機能的には同等な Skill のどちらを Agent が選ぶかが偏りうることが報告されました（[Saha, Faghih & Feizi, 2026](https://arxiv.org/abs/2605.11418)）。この研究が、本稿でいう「Skill を読み込んだ後の Frame Fixation」まで実証したわけではありません。しかし少なくとも、**SKILL.md は受動的な説明文ではなく、Agent が何を見つけ、選び、使うかに影響する Operational Text である** ことを示す結果だと言えます。
+この可能性を Agent Skills 側から考えるうえで興味深い研究も現れています。2026年の *Under the Hood of SKILL.md* では、`SKILL.md` の自然言語的な Metadata や Description の Framing によって、機能的には同等な Skill のどちらを Agent が選ぶかが偏りうることが報告されました（[Saha, Faghih & Feizi, 2026](https://arxiv.org/abs/2605.11418)）。
+
+この研究が、本稿でいう「Skill を読み込んだ後の Frame Fixation」まで実証したわけではありません。しかし少なくとも、**SKILL.md は受動的な説明文ではなく、Agent が何を見つけ、選び、使うかに影響する Operational Text である** ことを示す結果だと言えます。
 
 # 現在の状況を Skill の Frame に押し込めていないか？
 
@@ -411,7 +415,7 @@ Meta-Judgment は、
 
 ことができます。
 
-**プロジェクトの成功は、成功か失敗かという一度きりの２値判定ではなく、成功確率を少しずつ上げ続ける判断の連続** として捉えた方が、実態に近いと思われます。
+**プロジェクトの成功は、成功か失敗かという一度きりの２値判定ではなく、成功確率を少しずつ上げ続ける判断の連続** として捉えた方が、実態に近いのではないでしょうか。
 
 実際、私が知っている経験豊富なプロジェクトマネージャー達は、判断する事項と保留する事項の仕分けを的確に行いつつ、最終的なプロジェクト成功確率を着実に上げていきます。
 
@@ -485,13 +489,15 @@ Safer Agent
 
 ルールが増えるほど Agent が既存の分類体系へ依存し、
 
-> 「このケースはルール42番だ」
+> 「このケースは ルール 42番だ」
 
 と処理するようになれば、未知のケースへの柔軟性が落ちる可能性があります。
 
 過去の失敗から学んだはずなのに、その学び方が Procedural になりすぎることで、かえって未知の状況へ弱くなる。
 
-実際、448組織を対象に Near Miss からの学習を調べた研究では、Near Miss の経験は組織の **Procedural Response を強める一方で、Flexible Response への重点を弱める** 傾向と関連していました（[Azadegan et al., 2019](https://doi.org/10.1016/j.ijpe.2019.04.021)）。もちろん、組織と LLM Agent をそのまま同一視することはできません。しかし「失敗から学ぶこと」と「ルールを増やすこと」は同義ではなく、学び方によっては柔軟性を失う可能性がある、という点は示唆的です。
+実際、448組織を対象に Near Miss からの学習を調べた研究では、Near Miss の経験は組織の **Procedural Response を強める一方で、Flexible Response への重点を弱める** 傾向と関連していました（[Azadegan et al., 2019](https://doi.org/10.1016/j.ijpe.2019.04.021)）。
+
+もちろん、組織と LLM Agent をそのまま同一視することはできません。しかし「失敗から学ぶこと」と「ルールを増やすこと」は同義ではなく、学び方によっては柔軟性を失う可能性がある、という点は示唆的です。
 
 これはまた、人間の組織でも良く経験される問題にも似ています。
 
@@ -506,7 +512,9 @@ Safer Agent
 
 を疑うことだった、ということがあります。
 
-組織学習の研究でいう **Single-loop Learning** と **Double-loop Learning** の違いにも近いでしょう。Chris Argyris は、与えられた目的や前提の中で誤りを修正するだけでなく、その判断を生み出した Policy や Objective 自体を問い直す学習を Double-loop Learning として区別しました（[Argyris, 1977](https://hbr.org/1977/09/double-loop-learning-in-organizations)）。
+組織学習の研究でいう **Single-loop Learning** と **Double-loop Learning** の違いにも近いでしょう。
+
+Chris Argyris は、与えられた目的や前提の中で誤りを修正するだけでなく、その判断を生み出した Policy や Objective 自体を問い直す学習を Double-loop Learning として区別しました（[Argyris, 1977](https://hbr.org/1977/09/double-loop-learning-in-organizations)）。
 
 失敗した行動を修正するのが Single-loop。  
 判断を生み出した前提や Frame そのものを疑うのが Double-loop です。
@@ -610,9 +618,13 @@ Agent Memory の研究は、２つ目の Experience Layer へ取り組み始め�
 
 すでに LLM Agent 研究では、過去の Trial、Reflection、Trajectory、成功・失敗事例などを Context として与えることで、次の実行へ利用し、性能を改善するアプローチが多数行われています。
 
-代表例のひとつである **Reflexion** は、モデルの Weight を更新する代わりに、Task の Feedback を自然言語で Reflection し、そのテキストを Episodic Memory Buffer に保存して次の Trial に利用します（[Shinn et al., 2023](https://papers.neurips.cc/paper_files/paper/2023/hash/1b44b878bb782e6954cd888628510e90-Abstract-Conference.html)）。また **ExpeL** は、Agent が複数の Task から Experience を蓄積し、そこから抽出した Insight と過去の Experience 自体を、推論時に想起して判断へ利用する枠組みを提案しています（[Zhao et al., 2023](https://arxiv.org/abs/2308.10144)）。
+代表例のひとつである **Reflexion** は、モデルの Weight を更新する代わりに、Task の Feedback を自然言語で Reflection し、そのテキストを Episodic Memory Buffer に保存して次の Trial に利用します（[Shinn et al., 2023](https://papers.neurips.cc/paper_files/paper/2023/hash/1b44b878bb782e6954cd888628510e90-Abstract-Conference.html)）。
 
-これらの研究は、「Weight を再学習しなくても、過去の Experience を利用して Agent の性能を改善できる」ことを示しています。しかし本稿で特に関心があるのは、そこからさらに踏み込んだ、少々違う問いです。**Experience によって正答率を上げるだけでなく、Agent の「疑い方」そのものを変えられるのか、というポイントです。**
+また **ExpeL** は、Agent が複数の Task から Experience を蓄積し、そこから抽出した Insight と過去の Experience 自体を、推論時に想起して判断へ利用する枠組みを提案しています（[Zhao et al., 2023](https://arxiv.org/abs/2308.10144)）。
+
+これらの研究は、「Weight を再学習しなくても、過去の Experience を利用して Agent の性能を改善できる」ことを示しています。
+
+しかし本稿で特に関心があるのは、そこからさらに踏み込んだ、少々違う問いです。**Experience によって正答率を上げるだけでなく、Agent の「疑い方」そのものを変えられるのか、というポイントです。**
 
 つまり、この能力を、
 
@@ -674,7 +686,8 @@ Agent の推論姿勢が、
 
 といったものを測る必要があります。
 
-この問題に近い研究は、すでに始まりつつあります。2026年の **Agentic Abstention** は、Agent が単発で「答える／拒否する」を選ぶ問題ではなく、環境との相互作用の途中で **Answer / Act / Abstain** を逐次判断し、「いつ行動を止めるべきか」を扱っています。13種類の LLM-as-Agent システムを 28,000 件以上の Task で評価した結果、止まるべきなのに止まれないケースだけでなく、止まる判断が遅すぎるケースも観測されています（[Luo, Wen & Wang, 2026](https://arxiv.org/abs/2606.28733)）。
+この問題に近い研究は、すでに始まりつつあります。  
+2026年の **Agentic Abstention** は、Agent が単発で「答える／拒否する」を選ぶ問題ではなく、環境との相互作用の途中で **Answer / Act / Abstain** を逐次判断し、「いつ行動を止めるべきか」を扱っています。13種類の LLM-as-Agent システムを 28,000 件以上の Task で評価した結果、止まるべきなのに止まれないケースだけでなく、止まる判断が遅すぎるケースも観測されています（[Luo, Wen & Wang, 2026](https://arxiv.org/abs/2606.28733)）。
 
 これは本稿の問題意識と非常に近い一方で、Meta-Judgment は単なる停止判断より少し広いものとして考えています。つまり、「行動を続けるべきか」だけでなく、**そもそも現在の Problem Frame や Skill の適用そのものを信頼してよいか** を問う層です。
 
