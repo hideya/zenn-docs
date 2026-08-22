@@ -74,7 +74,7 @@ SkillTrace は、スキルを使った処理（run）において、次の4つ�
 この記事では、まず小さな toy demo を動かし、その後、自分の repository に適用する流れを紹介します。
 
 [![SkillTrace 実行の様子](/images/skilltrace-introduction/skilltrace-video-cover.webp =400x)
-*SkillTrace によるデモ実行の様子*](https://github.com/user-attachments/assets/ddcdebc4-9050-4614-b9ac-14f484620a99)
+*SkillTrace によるデモ実行の様子*](https://github.com/user-attachments/assets/5958429c-e98b-43e9-a872-329998b2e0f6)
 
 # SkillTrace が記録するもの
 
