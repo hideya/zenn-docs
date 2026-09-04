@@ -1,5 +1,5 @@
 ---
-title: "LangChain.js × Gemini × MCPでハマる「400 Bad Request」をサクッと回避する方法"
+title: "LangChain.js × Gemini × MCP の Schema Error を回避する方法（@langchain/google版）"
 emoji: "🛠️"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["MCP", "Gemini", "MCP", "LangChain", "LLM"]
@@ -8,54 +8,48 @@ published: true
 
 ### TL;DR
 
-**もし Gemini + LangChain.js (`@langchain/google-genai`)  + MCP で 400 エラーが出てお困りの場合、このパッケージで差し替えるだけで解決します！**
+**もし Gemini + LangChain.js (`@langchain/google`) + MCP で 「`InvalidInputError: Gemini does not support ...`」や「`RequestError: Invalid JSON payload received`」が出てお困りの場合、このパッケージで差し替えるだけで解決します！**
 
 まず、このライブラリを入れてみてください：
 ```bash
-npm i @h1deya/langchain-google-genai-ex
+npm i @h1deya/langchain-google-ex
 ```
-そしてインポートを差し替えて、クラス名を  **`ChatGoogleGenerativeAIEx`** で置き換えるだけ：
+そしてインポートを差し替えて、クラス名を  **`ChatGoogleEx`** で置き換えるだけ：
 ```diff
-- import { ChatGoogleGenerativeAI } from "@langchain/google-genai"
-+ import { ChatGoogleGenerativeAIEx } from "@h1deya/langchain-google-genai-ex"
+- import { ChatGoogle } from "@langchain/google/node"
++ import { ChatGoogleEx } from "@h1deya/langchain-google-ex"
 
-- const model = new ChatGoogleGenerativeAI({...});
-+ const model = new ChatGoogleGenerativeAIEx({...});
+- const model = new ChatGoogle({...});
++ const model = new ChatGoogleEx({...});
 ```
 これで込み入ったスキーマの MCP を Gemini が拒否してエラーを返す問題を回避できます。
 
-> **Note：`@langchain/google`** をお使いの方は、[**こちらの記事**](https://zenn.dev/h1deya/articles/mcp-langchain-gemini-schema-error) をご覧ください。
+> **Note：`@langchain/google-genai`** をお使いの方は、[**こちらの記事**](https://zenn.dev/h1deya/articles/mcp-langchain-gemini-400-error) をご覧ください。
 
-> このライブラリは、`langchain` v1.5.10、`@langchain/google-genai` v2.3.0、および `@langchain/mcp-adapters` v1.1.4 で動作を 確認しています。
+> このライブラリは、`langchain` v1.5.10、`@langchain/google` v0.2.3、および `@langchain/mcp-adapters` v1.1.4 で動作を 確認しています。
 
 ## はじめに
 
-LangChain.js を使って MCP サーバーを動かしつつ、LLM に Google Gemini を選んで試してみたところ……  
-**「400 Bad Request: Invalid JSON payload received」**  
-というエラーが…。これには何度も泣かされました。
+LangChain.js を使って MCP サーバーを動かしつつ、LLM に Google Gemini を使うと「**`InvalidInputError: Gemini does not support ...`**」や「**`RequestError: Invalid JSON payload received`**」ようなスキーマエラーが出ることがあります。
 
-特に、MCP サーバーのスキーマにちょっと複雑な要素（`anyOf` など）が含まれていると、Gemini がそれを受け付けず、一緒に使おうとしてる MCP 全部まとめて失敗してしまうんです。
+困るのは、他の OpenAI や Anthropic のモデルではうまく動くのに、Gemini では動かない場合があることです。そこで、これをなんとかしたいと思い、**Gemini でも MCPツール をエラー無しで使えるようにするための小さなライブラリ** を作ってみました。
 
-LangChain.js ユーザーで、MCP 活用中、かつ Gemini のコスパの良さに目覚めた私にとっては、とても悩ましい問題です…。
+以下では、以前 作った `@langchain/google-genai` 用のライブラリを **`@langchain/google`** 用にアップデートしたものについて、実際の使い方をコード例を交えてご紹介します。
 
-そこで、「これはさすがに困る！」と思い、**Gemini でも MCPツール をエラー無しで使えるようにするための小さなライブラリ** を作ってみました。  
-以下では、
-
-- どういう状況でエラーが出るのか
-- どんな仕組みで回避できるのか
-- 実際の導入方法とコード例
-
-をご紹介します。  
 同じように「LangChain.js × Gemini × MCP」でハマっている方のお役に立てばうれしいです！
 
 ## よくハマるエラー
 
-LangChain.js + Gemini（`@langchain/google-genai`）で MCP を使っていて、こんなエラーに出くわすことがあります：
+LangChain.js + Gemini（`@langchain/google`）で MCP を使っていて、こんなエラーに出くわすことがあります：
 
 ```
-[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta
-[400 Bad Request] Invalid JSON payload received.
-Unknown name "anyOf" at 'tools[0].function_decla...
+RequestError: Invalid JSON payload received.
+Unknown name "exclusiveMaximum" ...
+Unknown name "exclusiveMinimum" ...
+```
+```
+InvalidInputError: Gemini does not support union types in function schemas.
+Use a single type instead.
 ```
 これは、**MCP サーバーのスキーマが Gemini にとって「複雑すぎる」** ときに起きます。
 
@@ -76,15 +70,15 @@ LangChain.js ユーザーで、かつ MCP と Gemini を活用したい私にと
 
 ## 解決方法
 
-そんなわけで、「このままじゃ Gemini と MCP が一緒に使えない！」と困り果てた末、その **対策を組み込んだ小さなライブラリを自作** して、パッケージとして公開しました：**`@h1deya/langchain-google-genai-ex`**（[リンク](https://www.npmjs.com/package/@h1deya/langchain-google-genai-ex)）
+そこで 対策を組み込んだ小さなライブラリを自作 して、パッケージとして公開しました： **`@h1deya/langchain-google-ex`**（[リンク](https://www.npmjs.com/package/@h1deya/langchain-google-ex)）
 
-これをインストールして、提供しているクラスで「`ChatGoogleGenerativeAI`」を置き換えると、LangChain.js から Gemini を呼び出すときに **MCP のスキーマを自動的に 「Gemini フレンドリー」な形に書き換え** てくれます。単に **インポートとクラス名を置き換えるだけ** で OK です。
+これをインストールして、提供しているクラスで「`ChatGoogle`」を置き換えると、LangChain.js から Gemini を呼び出すときに **MCP のスキーマを自動的に 「Gemini フレンドリー」な形に書き換え** てくれます。単に **インポートとクラス名を置き換えるだけ** で OK です。
 ```diff
-- import { ChatGoogleGenerativeAI } from "@langchain/google-genai"
-+ import { ChatGoogleGenerativeAIEx } from "@h1deya/langchain-google-genai-ex"
+- import { ChatGoogle } from "@langchain/google/node"
++ import { ChatGoogleEx } from "@h1deya/langchain-google-ex"
 
-- const model = new ChatGoogleGenerativeAI({...});
-+ const model = new ChatGoogleGenerativeAIEx({...});
+- const model = new ChatGoogle({...});
++ const model = new ChatGoogleEx({...});
 ```
 これで、MCP ツールのスキーマをそのままにしていても、Gemini が「anyOf があるからイヤ！」みたいに拒否せず、**ちゃんと受け付けてくれる** ようになります。
 
@@ -92,13 +86,12 @@ LangChain.js ユーザーで、かつ MCP と Gemini を活用したい私にと
 
 ## 再現＆解決のコード例
 
-以下ではサンプルコードを用いて使い方を具体的に見ていきます（即 clone して実行できるように GitHub にも上げました ➡︎ [リンク](https://github.com/hideya/langchain-google-genai-ex-usage)）。
+以下ではサンプルコードを用いて使い方を具体的に見ていきます（即 clone して実行できるように GitHub にも上げました ➡︎ [リンク](https://github.com/hideya/langchain-google-ex-usage)）。
 
 ### 1. 依存パッケージをインストール
 ```
 npm i langchain @langchain/mcp-adapters \
-      @langchain/google-genai \
-      @h1deya/langchain-google-genai-ex
+        @langchain/google @h1deya/langchain-google-ex
 ```
 ### 2. APIキーを設定
 ```
@@ -110,12 +103,11 @@ export GOOGLE_API_KEY=...
 
 **Before（標準の `ChatGoogleGenerativeAI` を使った場合）**
 ```ts
-import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
-// import { ChatGoogleGenerativeAIEx } from "@h1deya/langchain-google-genai-ex";
+import { ChatGoogle } from "@langchain/google/node";
+// import { ChatGoogleEx } from "@h1deya/langchain-google-ex";
 import { createAgent } from "langchain";
 import { MultiServerMCPClient } from "@langchain/mcp-adapters";
 
-// The following Fetch MCP server causes "400 Bad Request"
 const client = new MultiServerMCPClient({
   throwOnLoadError: true,
   useStandardContentBlocks: true,
@@ -131,13 +123,13 @@ const client = new MultiServerMCPClient({
 (async () => { // workaround for top-level await
   try {
     const mcpTools = await client.getTools();
-
-    const model = new ChatGoogleGenerativeAI({ model: "gemini-3.5-flash" });
-    // const model = new ChatGoogleGenerativeAIEx({ model: "gemini-3.5-flash" });
-
+    const model = new ChatGoogle({
+    // const model = new ChatGoogleEx({
+      model: "gemini-3.5-flash",
+      apiKey: process.env.GOOGLE_API_KEY,
+    });
     const agent = createAgent({ model, tools: mcpTools });
 
-    // This works! No more schema errors
     const result = await agent.invoke({
       messages: [
         {
@@ -154,38 +146,37 @@ const client = new MultiServerMCPClient({
 })();
 ```
 
-これを実行すると、例の 400 Bad Request が返ってきます。
+これを実行すると、**`RequestError: Invalid JSON payload received`** が返ってきます。
 
 ```
-GoogleGenerativeAIFetchError: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent: [400 Bad Request] Invalid JSON payload received. Unknown name "exclusiveMaximum" at 'tools[0].function_declarations[0].parameters.properties[1].value': Cannot find field.
-Invalid JSON payload received. Unknown name "exclusiveMinimum" at 'tools[0].function_declarations[0].parameters.properties[1].value': Cannot find field. [{"@type":"type.googleapis.com/google.rpc.BadRequest","fieldViolations":[{"field":"tools[0].function_declarations[0].parameters.properties[1].value","description":"Invalid JSON payload received. Unknown name \"exclusiveMaximum\" at 'tools[0].function_declarations[0].parameters.properties[1].value': Cannot find field."},{"field":"tools[0].function_declarations[0].parameters.properties[1].value","description":"Invalid JSON payload received. Unknown name \"exclusiveMinimum\" at 'tools[0].function_declarations[0].parameters.properties[1].value': Cannot find field."}]}]
-    at handleResponseNotOk (/.../node_modules/@google/generative-ai/dist/index.js:434:11)
+RequestError: Invalid JSON payload received. Unknown name "exclusiveMaximum" at 'tools[0].function_declarations[0].parameters.properties[1].value': Cannot find field.
+Invalid JSON payload received. Unknown name "exclusiveMinimum" at 'tools[0].function_declarations[0].parameters.properties[1].value': Cannot find field.
+    at Function.fromResponse (/.../node_modules/@langchain/google/src/utils/errors.ts:543:12)
     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at async makeRequest (/.../node_modules/@google/generative-ai/dist/index.js:403:9)
-    at async generateContent (/.../node_modules/@google/generative-ai/dist/index.js:867:22)
-    at async <anonymous> (/.../node_modules/@langchain/google-genai/src/chat_models.ts:1078:18)
+    at async <anonymous> (/.../node_modules/@langchain/google/src/chat_models/base.ts:606:19)
     at async Object.pRetry (/.../node_modules/@langchain/core/src/utils/p-retry/index.js:246:22)
     at async run (/.../node_modules/p-queue/dist/index.js:163:29) {
-  status: 400,
+  url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent',
+  statusCode: 400,
   statusText: 'Bad Request',
-  errorDetails: [
+  headers: {
       ...
 ```
 
 **After（`ChatGoogleGenerativeAIEx` に置き換え後）**
 ```ts
-// import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
-import { ChatGoogleGenerativeAIEx } from "@h1deya/langchain-google-genai-ex";
+// import { ChatGoogle } from "@langchain/google/node";
+import { ChatGoogleEx } from "@h1deya/langchain-google-ex";
     ︙
     ︙
-  // const model = new ChatGoogleGenerativeAI({ model: "gemini-3.5-flash" });
-  const model = new ChatGoogleGenerativeAIEx({ model: "gemini-3.5-flash"} );
+  // const model = new ChatGoogle({
+  const model = new ChatGoogleEx({
     ︙
 ```
 
 これで エラーが消え、ちゃんと応答が返ってくる ようになります！
 ```
-Based on the raw HTML content fetched from `bbc.com`, the title of the website (found within the `<title>` tag) is:
+I have fetched the raw HTML content of bbc.com. The title of the page (found inside the `<title>` tag) is:
 
 **"BBC Home - Breaking News, World News, US News, Sports, Business, Innovation, Climate, Culture, Travel, Video & Audio"**
 ```
@@ -197,7 +188,7 @@ Based on the raw HTML content fetched from `bbc.com`, the title of the website (
 
 もし、どのようなスキーマ変換が行われているかを確認したい場合、以下の環境変数を設定することで、詳細なログが取得できます。
 ```bash
-export LANGCHAIN_GOOGLE_GENAI_EX_VERBOSE=true
+export LANGCHAIN_GOOGLE_EX_VERBOSE=true
 ```
 **出力例：** 上のサンプルコードの場合は、以下のようなログが出てきます。
 ```
@@ -242,13 +233,13 @@ export LANGCHAIN_GOOGLE_GENAI_EX_VERBOSE=true
 私はこの問題で時間を浪費してきました。。  
 そんなこともあり、同じように悩んでいる方が時間をムダにせずに済むように、このライブラリを作ってみました。もし何らかのお役に立てれば幸いです。
 
-もし使ってみて何かフィードバックがあれば、[GitHub](https://github.com/hideya/langchain-google-genai-ex) で Issue や PR をいただければ助かります！🙏
+もし使ってみて何かフィードバックがあれば、[GitHub](https://github.com/hideya/langchain-google-ex) で Issue や PR をいただければ助かります！🙏
 
 ### 参考資料・リンク
 
 - [Gemini の Function Calling におけるスキーマ定義への要件](https://docs.cloud.google.com/gemini-enterprise-agent-platform/reference/rest/v1/Schema)
-- [npmjs の @h1deya/langchain-google-genai-ex のページ](https://www.npmjs.com/package/@h1deya/langchain-google-genai-ex)
-- [GitHub リポジトリ](https://github.com/hideya/langchain-google-genai-ex)
-- [即実行可能な利用サンプルコード（GitHub）](https://github.com/hideya/langchain-google-genai-ex-usage)
-- [**`@langchain/google`** 用の同様のパッケージ](https://www.npmjs.com/package/@h1deya/langchain-google-ex)
+- [npmjs の @h1deya/langchain-google-ex のページ](https://www.npmjs.com/package/@h1deya/langchain-google-ex)
+- [GitHub リポジトリ](https://github.com/hideya/langchain-google-ex)
+- [即実行可能な利用サンプルコード（GitHub）](https://github.com/hideya/langchain-google-ex-usage)
+- [**`@langchain/google-genai`** 用の同様のパッケージ](https://www.npmjs.com/package/@h1deya/langchain-google-genai-ex)
 
