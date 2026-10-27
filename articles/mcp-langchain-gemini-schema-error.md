@@ -3,7 +3,7 @@ title: "LangChain.js × Gemini × MCP の Schema Error を回避する方法（@
 emoji: "🛠️"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["MCP", "Gemini", "MCP", "LangChain", "LLM"]
-published: true
+published: false
 ---
 
 ### TL;DR
